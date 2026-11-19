@@ -1,0 +1,593 @@
+[
+  {
+    "slug": "R9-230H",
+    "name": "R9 Series FHD PTZ Camera R9-230H",
+    "cat": "camera",
+    "source": "https://plumkorea.co.kr/goods/goods_view.php?goodsNo=1000000018",
+    "gallery": [
+      "products/r9-230h/g1.png",
+      "products/r9-230h/g2.png",
+      "products/r9-230h/g3.png",
+      "products/r9-230h/g4.png"
+    ],
+    "detail": [],
+    "summary": "1/1.8형 Sony STARVIS 2 이미지 센서와 30배 광학 줌을 탑재한 Full HD PTZ 카메라입니다. 1080p 60fps 촬영과 SDI, HDMI, IP 영상 출력을 지원합니다.",
+    "features": [
+      "1/1.8형 Sony STARVIS 2 센서 · 약 417만 화소",
+      "Full HD 1080p 최대 60fps",
+      "30배 광학 줌",
+      "3G-SDI · HDMI · IP 영상 출력",
+      "PoE++ 및 12V DC 전원 지원",
+      "전면·후면 Tally Light 및 Genlock 지원",
+      "내장 핸들과 HDMI 케이블 고정 구조",
+      "블랙 및 화이트 색상 선택 가능"
+    ],
+    "info": [
+      [
+        "모델명",
+        "R9-230H"
+      ],
+      [
+        "브랜드",
+        "BOLIN"
+      ],
+      [
+        "제품군",
+        "R9 Red Line"
+      ],
+      [
+        "제품 유형",
+        "Full HD PTZ 카메라"
+      ],
+      [
+        "가격 및 구매 문의",
+        "소다미디어 상담 문의"
+      ]
+    ],
+    "spec": [
+      {
+        "title": "이미지·카메라 사양 (IMAGE FULL HD, 30X)",
+        "rows": [
+          [
+            "Image Maker",
+            "Sony"
+          ],
+          [
+            "Image Sensor",
+            "CMOS image sensor 1/1.8 type STARVIS 2 sensor"
+          ],
+          [
+            "Number of effective pixels",
+            "2712 x 1538, 4.17M pixels"
+          ],
+          [
+            "Picture elements",
+            "2688 x 1520, 4.09M pixels"
+          ],
+          [
+            "Lens",
+            "Enhanced optical zoom 30X"
+          ],
+          [
+            "Tele Convert Mode",
+            "-"
+          ],
+          [
+            "Digital Zoom",
+            "12X"
+          ],
+          [
+            "Horizontal Angle of View",
+            "58.1 degrees (Wide) - 2.3 degrees (Tele)"
+          ],
+          [
+            "Vertical Angle of View",
+            "34.9 degrees (Wide) - 1.7 degrees (Tele)"
+          ],
+          [
+            "Focal Length",
+            "f= 6.5 mm (WIDE) to 162.5 mm (TELE)"
+          ],
+          [
+            "Min. object distance",
+            "100 mm (Wide), 1200 mm (Tele)"
+          ],
+          [
+            "Aperture",
+            "F1.6 (Wide) to F4.8 (Tele), 16 steps"
+          ],
+          [
+            "Min. Illumination",
+            "ICR-Off, 0.009 lx (1/30 sec, 50%, High Sensitivity On); ICR-On, 0.00008 lx (1/30 sec, 50%, High Sensitivity On)"
+          ],
+          [
+            "Shutter Speed",
+            "1/1 sec to 1/10000 sec (22 steps)"
+          ],
+          [
+            "Focus",
+            "Spot Focus, Auto / Manual / One Push Trigger / Full Scan one push trigger / Near Limit / Spot Light Avoidance"
+          ],
+          [
+            "White Balance",
+            "Auto / ATW / Indoor / Outdoor / One Push WB / Manual / One push Trigger / Outdoor Auto / Sodium Vapor Lamp Auto / Sodium Vapor Lamp / Sodium Vapor Lamp Outdoor Auto"
+          ],
+          [
+            "Exposure",
+            "Full Auto / Gain Limit Setting / Shutter Priority / Iris Priority / Manual / EV compensation"
+          ],
+          [
+            "Features",
+            "High Sensitivity, Backlight Compensation, HLC, E-FLIP, Mirror, Day/Night"
+          ],
+          [
+            "WDR",
+            "Yes"
+          ],
+          [
+            "ND Filter",
+            "-"
+          ],
+          [
+            "Image Stabilizer",
+            "Yes, Super, Super+"
+          ],
+          [
+            "Color Gain",
+            "Yes (15 step)"
+          ],
+          [
+            "Color Hue",
+            "Yes (15 step)"
+          ],
+          [
+            "Gamma",
+            "Standard / Straight gamma"
+          ],
+          [
+            "Gamma Level",
+            "-"
+          ],
+          [
+            "Black Level",
+            "-"
+          ],
+          [
+            "Black Gamma",
+            "-"
+          ],
+          [
+            "Color Matrix",
+            "-"
+          ],
+          [
+            "Noise Reduction",
+            "On/Off (level 5 to 1 / Off, 6 steps), 3D / 2D"
+          ],
+          [
+            "S/N Ratio",
+            ">=50 dB"
+          ],
+          [
+            "HLC",
+            "Yes"
+          ],
+          [
+            "E-Flip",
+            "Yes"
+          ],
+          [
+            "Privacy Zone Masking",
+            "Yes"
+          ],
+          [
+            "Defog",
+            "Yes (off, low, mid, high)"
+          ],
+          [
+            "High Sensitivity",
+            "Yes"
+          ],
+          [
+            "Slow AE Response",
+            "Yes"
+          ],
+          [
+            "Day/Night",
+            "Yes"
+          ],
+          [
+            "Backlight Compensation",
+            "Yes"
+          ],
+          [
+            "Low Latency Mode",
+            "Yes"
+          ],
+          [
+            "AI Face Detection Focus",
+            "-"
+          ],
+          [
+            "AI Face Auto Exposure",
+            "-"
+          ],
+          [
+            "Scene Style",
+            "-"
+          ],
+          [
+            "Focus Zone",
+            "-"
+          ]
+        ]
+      },
+      {
+        "title": "기구부 (MECHANICAL)",
+        "rows": [
+          [
+            "Pan Movement",
+            "PAN: 340 degrees (-170 to +170); proportional speed 0.05 to 100 degrees/s"
+          ],
+          [
+            "Tilt Movement",
+            "TILT: 120 degrees (-30 to +90); proportional speed 0.05 to 75 degrees/s"
+          ],
+          [
+            "Speed Proportional",
+            "Pan/Tilt speed proportional to zoom range"
+          ],
+          [
+            "Preset Position",
+            "255 positions, speed 100 degrees/s, 0-5 level adjustable, accuracy: 0.1 degrees"
+          ],
+          [
+            "Preset Memory",
+            "Backlight Compensation, White Balance, R-Gain/B-Gain, Auto Exposure, Bright, Iris, Shutter, Gain, Aperture, Effect, Noise Reduction, Mirror, Gamma, Ex-COMP, Color Hue, Contrast"
+          ],
+          [
+            "Motionless Preset",
+            "Yes, On/Off"
+          ],
+          [
+            "PTZ Trace Memory",
+            "Yes, 12"
+          ],
+          [
+            "Cruise",
+            "Yes, 4"
+          ],
+          [
+            "Quietness",
+            "NC35 compliant"
+          ],
+          [
+            "Home Position",
+            "Yes"
+          ],
+          [
+            "FreeD",
+            "FreeD protocol for AR/VR camera tracking via serial control/IP (firmware upgrade)"
+          ],
+          [
+            "Environmental",
+            "Indoor, IP65"
+          ]
+        ]
+      },
+      {
+        "title": "인터페이스 (INTERFACE)",
+        "rows": [
+          [
+            "HDMI Video Output",
+            "HDMI 2.0 Type A"
+          ],
+          [
+            "SDI Video Output",
+            "3G-SDI, SMPTE 424M / SMPTE 292M / SMPTE 296M, 75 ohm BNC x 2, SDI/PM output with OSD display"
+          ],
+          [
+            "SDI Optical Fiber Output",
+            "Optical 12G-SDI (module excluded); detachable slot; Duplex LC connector (optional ST, LC or SMPTE). Single-mode 1,310 nm DFB-LD transmitter and PIN receiver; MSA SFP+ specification SFF-8402."
+          ],
+          [
+            "Network LAN Port",
+            "RJ45 x 1, 10M/100M/1000M Base-TX Ethernet for IP control/video/audio output and system firmware upgrade"
+          ],
+          [
+            "Synchronization System",
+            "Internal/external synchronization (BBS/Tri-level sync)"
+          ],
+          [
+            "External Sync Input",
+            "Genlock, BNC connector, BBS (Black Burst Sync), tri-level sync"
+          ],
+          [
+            "Audio Input",
+            "Balanced XLR (Hirose connector via Atomos 10-pin LEMO-type to XLR breakout cable) with 48V phantom power; 3.5 mm TRRS bidirectional audio intercom"
+          ],
+          [
+            "Audio Output",
+            "Balanced XLR (Hirose connector via Atomos 10-pin LEMO-type breakout cable), embedded with HDMI/SDI/USB/IP; 3.5 mm TRRS bidirectional audio intercom"
+          ],
+          [
+            "Edge Storage",
+            "-"
+          ],
+          [
+            "Tally Light",
+            "Red/green, front and rear"
+          ],
+          [
+            "Dip Switch",
+            "Video resolution dip switch x 1"
+          ],
+          [
+            "System Firmware Upgrade",
+            "IP upgrade for camera system MCU, driver, FPGA and encoder"
+          ],
+          [
+            "Power Connector Type",
+            "DC12V screw-secure input (5.5 x 2.1 mm); RJ45 PoE++ input (IEEE 802.3bt)"
+          ],
+          [
+            "Control Interface",
+            "RJ45 x 1 RS-422, RJ45 x 1 IP control, IR remote control"
+          ],
+          [
+            "Control Protocol",
+            "Serial: VISCA, PELCO P/D; IP: VISCA over IP, ONVIF; FreeD via hardware upgrade"
+          ]
+        ]
+      },
+      {
+        "title": "HDMI 영상 신호",
+        "rows": [
+          [
+            "HDMI Video Format",
+            "1920 x 1080: 59.94p/60p, 59.94i/60i, 50p, 50i, 29.97p/30p, 25p, 23.98p/24p; 1280 x 720: 59.94p/60p, 50p"
+          ],
+          [
+            "Color Precision",
+            "12-bit (HDMI), YUV 4:2:2, YUV 4:2:0"
+          ],
+          [
+            "Color Space",
+            "YUV, RGB"
+          ],
+          [
+            "OSD Menu Display",
+            "Yes, with image insert"
+          ],
+          [
+            "On-Screen Title",
+            "Video-embedded on-screen title character generator"
+          ]
+        ]
+      },
+      {
+        "title": "SDI 영상 신호",
+        "rows": [
+          [
+            "SDI Video Format",
+            "1920 x 1080: 59.94p/60p, 59.94i/60i, 50p, 50i, 29.97p/30p, 25p, 23.98p/24p; 1280 x 720: 59.94p/60p, 50p"
+          ],
+          [
+            "Color Precision",
+            "10-bit (SDI), YUV 4:2:2"
+          ],
+          [
+            "Color Space",
+            "YUV"
+          ],
+          [
+            "Standard",
+            "SMPTE 292M, 296M (1.5Gb/s), 424M, 274M, 425-A (3Gb/s), 2081 (6Gb/s), 2082-1 (12Gb/s); 75 ohm BNC; SMPTE 352 SDI metadata supported"
+          ],
+          [
+            "True Dual Output",
+            "HDMI and SDI signals can be output in different formats"
+          ],
+          [
+            "OSD Menu Display",
+            "Yes"
+          ],
+          [
+            "On-Screen Title",
+            "Video-embedded on-screen title character generator"
+          ]
+        ]
+      },
+      {
+        "title": "USB 영상 신호",
+        "rows": [
+          [
+            "USB Port",
+            "USB 2.0 Type-C"
+          ],
+          [
+            "Encoder",
+            "H.264, MJPEG"
+          ],
+          [
+            "USB Video Format",
+            "1920x1080p60/50/30/25, 1280x720p60/50"
+          ],
+          [
+            "Compatible Integration",
+            "UVC, UAC"
+          ]
+        ]
+      },
+      {
+        "title": "네트워크 (NETWORK)",
+        "rows": [
+          [
+            "Codec",
+            "HEVC"
+          ],
+          [
+            "Video Compression",
+            "MJPEG, H.264/H.265 by SoC"
+          ],
+          [
+            "IP Resolution/Frame Rate",
+            "1920x1080p60/50/30/25, 1280x720p60/50"
+          ],
+          [
+            "True Dual Output",
+            "IP, HDMI and SDI signals can be set to different formats"
+          ],
+          [
+            "IP Protocols",
+            "TCP/IP, ICMP, ARP, RTP, UDP, HTTP, DNS, DHCP, FTP, NTP, SRT"
+          ],
+          [
+            "Application Protocols",
+            "RTMP(S), RTSP, RTSP Encryption, SRT, MP2TS over UDP (Unicast, Multicast)"
+          ],
+          [
+            "Color Format",
+            "-"
+          ],
+          [
+            "Multi-stream",
+            "3 streams"
+          ],
+          [
+            "Audio Compression",
+            "AAC-LC, G.711A/G.711U broadband audio encoding; duplex communication and audio/video synchronization supported"
+          ],
+          [
+            "OSD",
+            "Customized OSD"
+          ],
+          [
+            "Compatible Integration",
+            "ONVIF 2.4 (Profile S), VISCA over IP"
+          ],
+          [
+            "Bandwidth",
+            "2Mbps, 1080p60; results may vary by network configuration and management settings"
+          ],
+          [
+            "Latency",
+            "10 frames; stated 1080p60 glass-to-glass latency <170 ms; network configuration may affect total latency"
+          ],
+          [
+            "Browser Support",
+            "HTML5 support for Microsoft Edge, Google Chrome, Firefox and Safari"
+          ]
+        ]
+      },
+      {
+        "title": "일반 사양 (GENERAL)",
+        "rows": [
+          [
+            "Operating Temperature",
+            "-10 C to 50 C (14 F to 122 F)"
+          ],
+          [
+            "Operating Humidity",
+            "<=80%, non-condensing"
+          ],
+          [
+            "Power Input",
+            "DC12V, PoE++ (IEEE 802.3bt, Type 4 Class 8)"
+          ],
+          [
+            "Power Consumption",
+            "Min. 29W (static, no movement); max. 40W (fully loaded operation)"
+          ],
+          [
+            "Installation Method",
+            "Stand-alone (upright), suspended (pendent) or tripod"
+          ],
+          [
+            "Mount",
+            "Ceiling mount, wall mount, tripod"
+          ],
+          [
+            "Handle",
+            "Built-in for portable use"
+          ],
+          [
+            "Tripod Screw Hole",
+            "1 x 1/4-inch safety bond point"
+          ],
+          [
+            "Body Color",
+            "Black, white"
+          ],
+          [
+            "Dimensions",
+            "201 x 253 x 249 mm (W x D x H); 201 x 253 x 256 mm with feet mats"
+          ],
+          [
+            "Net Weight",
+            "3.8 kg (8.36 lb)"
+          ],
+          [
+            "Accessories Included",
+            "IR remote controller x 1, power adapter and power cord (US/EU/UK), mounting screws x 3, RJ45-to-RS422 extension cable, thank-you card x 1"
+          ],
+          [
+            "Optional Accessories",
+            "Wall mount bracket; ceiling mount bracket; quick mounting plate; tripod mount adaptor; cable connection junction box; stabilizer platform"
+          ]
+        ]
+      }
+    ],
+    "series": "BOLIN RED LINE",
+    "detail_sections": [
+      {
+        "title": "영상 출력 및 후면 구성",
+        "text": "카메라 후면과 모델별 출력 연결 구성을 확인할 수 있습니다.",
+        "images": [
+          {
+            "src": "products/r9-230h/detail-back.png",
+            "caption": "R9 후면"
+          },
+          {
+            "src": "products/r9-230h/detail-outputs.png",
+            "caption": "SKU 및 출력 구성"
+          }
+        ]
+      },
+      {
+        "title": "팬·틸트(PTZ) 기능",
+        "text": "부드러운 카메라 회전과 정밀한 위치 제어를 위한 팬·틸트 기능입니다.",
+        "items": [
+          "팬 회전: 340°(-170°~+170°), 비례 속도 0.05°~100°/초",
+          "틸트 회전: 210°(-90°~+120°), 비례 속도 0.05°~50°/초",
+          "프리셋 255개, 최대 속도 100°/초, 5단계 조절, 소개 영역 기준 위치 정확도 0.03°",
+          "픽처 프로파일 프리셋, 모션리스 프리셋, PTZ 트레이스 메모리",
+          "NC35 미만 저소음 구동, 펌웨어 업그레이드를 통한 FreeD 가상·AR 카메라 트래킹"
+        ],
+        "images": [
+          {
+            "src": "products/r9-230h/detail-ptz.png",
+            "caption": "PTZ 팬·틸트 동작"
+          }
+        ]
+      },
+      {
+        "title": "주요 기능",
+        "items": [
+          "화면 내 문자 생성 기능 및 IP를 통한 펌웨어 업데이트",
+          "전면·후면 탈리 라이트",
+          "PoE++ 및 12V DC 전원 입력",
+          "내장 핸들, Genlock, HDMI 케이블 고정 구조",
+          "블랙·화이트 색상 선택"
+        ],
+        "images": [
+          {
+            "src": "products/r9-230h/detail-tally.png",
+            "caption": "전면·후면 탈리 라이트"
+          }
+        ]
+      }
+    ],
+    "spec_note": "원본 페이지의 PTZ 소개와 상세 기구부 사양에서 틸트 범위(210° / 120°) 및 프리셋 정확도(0.03° / 0.1°)가 서로 다르게 표기되어 두 값을 모두 표시했습니다. 최종 사양은 제조사 확인이 필요합니다."
+  }
+]

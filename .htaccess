@@ -1,0 +1,11 @@
+# Enable Rewrite Engine
+RewriteEngine On
+RewriteBase /
+
+# 실제 존재하는 파일/디렉토리만 그대로 둠
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 모든 다른 요청은 /site/plum/index.php?p=main으로 리다이렉트
+RewriteRule ^.*$ /site/plum/index.php?p=main [R=301,L]
