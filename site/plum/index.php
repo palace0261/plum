@@ -33,7 +33,7 @@ $pdsList = array_filter($pdsAll, fn($it) => ($cat === '' || $it['cat'] === $cat)
     && ($q === '' || mb_stripos($it['title'], $q) !== false));
 
 $pages = [
-    'product' => '제품정보',
+    'product' => 'Product',
     'support' => '고객지원',
     'about'   => '회사소개',
     'demo'    => '데모요청',
@@ -52,6 +52,8 @@ $pcat = $_GET['cat'] ?? '';
 if (!isset($pcats[$pcat])) $pcat = '';
 $prd = $products[$_GET['id'] ?? ''] ?? null;
 if ($p === 'detail' && !$prd) $p = 'product';
+$filteredProducts = array_filter($products, fn($x) => ($pcat === '' || $x['cat'] === $pcat)
+    && ($q === '' || stripos($x['name'] . ' ' . ($x['summary'] ?? ''), $q) !== false));
 $img = fn($f) => '../b-pl-img/' . $f;
 $e = fn($s) => htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
@@ -783,47 +785,132 @@ $seoImage = $siteOrigin . $assetBase . '/b-pl-img/' . ($p === 'detail' && $prd
 <meta name="msapplication-TileColor" content="#000000">
 <meta name="theme-color" content="#000000">
 
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chiron+GoRound+TC:wght@200..900&family=Roboto:wght@400..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../b-pl-css/index.css?v=<?= filemtime(__DIR__ . '/../b-pl-css/index.css') ?>">
 </head>
 <body class="<?= $p === 'detail' ? 'product-page' : '' ?>">
 <?php
 $menu = [
-    ['제품정보', '?p=product', [['제품정보', '?p=product']]],
-    ['고객지원', '?p=support', [['매뉴얼', '?p=support&cat=manual'], ['자료실', '?p=support&cat=data'], ['상담신청', '?p=support#consult'], ['문의하기', '?p=support#inquiry']]],
-    ['회사소개', '?p=about', [['인사말', '?p=about#greet'], ['오시는길', '?p=way']]],
-    ['데모요청', '?p=demo', [['데모요청', '?p=demo']]],
+    ['Product', '?p=product', [
+        ['PTZ Camera', '?p=product', [['Red Line', '?p=product&cat=camera']]],
+        ['Controller', '?p=product&q=Controller', []],
+    ]],
+    ['고객지원', '?p=support', [
+        ['매뉴얼', '?p=support&cat=manual', []],
+        ['상담신청', '?p=support#consult', []],
+        ['문의하기', '?p=support#inquiry', []],
+    ]],
+    ['회사소개', '?p=about', [
+        ['인사말', '?p=about#greet', []],
+        ['오시는길', '?p=way', []],
+    ]],
+    ['데모요청', '?p=demo', []],
 ];
 ?>
-<header id="hd"><div class="in">
-  <a class="logo" href="?p=main"><img class="lg" src="../b-pl-img/logo.png" alt="PLUM"><img class="lg-on" src="../b-pl-img/logo_on.png" alt=""><span class="logo-label">BOLIN <strong>한국 총판</strong></span></a>
-  <nav><?php foreach ($pages as $k => $v): ?><a href="?p=<?= $k ?>" class="<?= $k === $p ? 'on' : '' ?>"><?= $e($v) ?></a><?php endforeach; ?></nav>
-  <button type="button" class="btn-menu" id="btnMenu" aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span><span></span></button>
-</div></header>
-<div class="m-menu" id="mMenu" aria-hidden="true">
-  <button type="button" class="m-close" id="mClose" aria-label="메뉴 닫기"></button>
-  <div class="m-cols">
-    <?php foreach ($menu as $m): ?>
-      <div class="m-col"><a class="m-h" href="<?= $e($m[1]) ?>"><?= $e($m[0]) ?></a>
-        <?php foreach ($m[2] as $s): ?><a href="<?= $e($s[1]) ?>"><?= $e($s[0]) ?></a><?php endforeach; ?>
-      </div>
-    <?php endforeach; ?>
+<header id="hd"><div class="header-shell">
+  <div class="utility-row in">
+    <span class="utility-note">Soda Media</span>
+    <div class="utility-links">
+      <a href="?p=support#consult">제품문의</a>
+      <a href="?p=support">기술지원</a>
+      <a href="?p=way">오시는길</a>
+      <a href="?p=demo">데모신청</a>
+    </div>
   </div>
-</div>
+  <div class="header-top in">
+    <a class="logo" href="?p=main"><img class="lg" src="../b-pl-img/logo.png" alt="PLUM"><img class="lg-on" src="../b-pl-img/logo_on.png" alt=""><span class="logo-label"><strong><span style="
+    font-weight: 200;
+">ㅣ</span> BOLIN 한국 총판</strong></span></a>
+    <div class="header-actions">
+      <form class="site-search" method="get" role="search">
+        <input type="hidden" name="p" value="product">
+        <label class="sr-only" for="siteSearch">제품 검색</label>
+        <input id="siteSearch" type="search" name="q" value="<?= $p === 'product' ? $e($q) : '' ?>" placeholder="제품명 검색">
+        <button type="submit" aria-label="검색"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg></button>
+      </form>
+      <button type="button" class="mega-toggle" id="megaToggle" aria-label="전체 메뉴 열기" aria-expanded="false" aria-controls="megaMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <nav class="site-nav" aria-label="주 메뉴"><div class="nav-inner in">
+    <?php foreach ($menu as $m): ?>
+      <a class="nav-trigger" href="<?= $e($m[1]) ?>">
+        <?= $e($m[0]) ?>
+      </a>
+    <?php endforeach; ?>
+  </div></nav>
+  <div class="mega-menu" id="megaMenu" aria-hidden="true">
+    <div class="mega-inner in">
+      <div class="mega-columns">
+        <?php foreach ($menu as $m): ?>
+          <section class="mega-column">
+            <div class="mega-links">
+              <?php foreach ($m[2] as $item): ?>
+                <div class="mega-link-group">
+                  <a class="mega-category" href="<?= $e($item[1]) ?>"><?= $e($item[0]) ?></a>
+                  <?php if ($item[2]): ?>
+                    <!--
+                    <div class="mega-sub-links">
+                      <?php foreach ($item[2] as $subitem): ?>
+                        <a href="<?= $e($subitem[1]) ?>"><?= $e($subitem[0]) ?></a>
+                      <?php endforeach; ?>
+                    </div>
+                    -->
+                  <?php endif; ?>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </section>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </div>
+</div></header>
 <script>
 (function () {
-  var b = document.getElementById('btnMenu'), m = document.getElementById('mMenu');
-  function set(o) {
-    m.classList.toggle('open', o);
-    b.setAttribute('aria-expanded', o);
-    m.setAttribute('aria-hidden', !o);
-    document.body.style.overflow = o ? 'hidden' : '';
+  var shell = document.querySelector('.header-shell');
+  var menu = document.getElementById('megaMenu');
+  var menuToggle = document.getElementById('megaToggle');
+  var triggers = Array.prototype.slice.call(document.querySelectorAll('.nav-trigger'));
+  var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var closeTimer;
+  function setOpen(open) {
+    window.clearTimeout(closeTimer);
+    shell.classList.toggle('mega-open', open);
+    menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menuToggle.setAttribute('aria-label', open ? '전체 메뉴 닫기' : '전체 메뉴 열기');
   }
-  b.addEventListener('click', function () { set(true); });
-  document.getElementById('mClose').addEventListener('click', function () { set(false); });
-  m.addEventListener('click', function (e) { if (e.target.tagName === 'A') set(false); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
-  window.addEventListener('resize', function () { if (window.innerWidth > 900) set(false); });
+  menuToggle.addEventListener('click', function () {
+    setOpen(!shell.classList.contains('mega-open'));
+  });
+  triggers.forEach(function (trigger) {
+    if (canHover) trigger.addEventListener('pointerenter', function () { setOpen(true); });
+  });
+  if (canHover) {
+    shell.addEventListener('pointerleave', function () {
+      closeTimer = window.setTimeout(function () { setOpen(false); }, 180);
+    });
+    menu.addEventListener('pointerenter', function () { window.clearTimeout(closeTimer); });
+    menu.addEventListener('pointerleave', function () {
+      closeTimer = window.setTimeout(function () { setOpen(false); }, 180);
+    });
+  }
+  document.addEventListener('click', function (event) {
+    if (!shell.contains(event.target)) setOpen(false);
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') setOpen(false);
+  });
+  shell.addEventListener('focusin', function (event) {
+    if (canHover && event.target.closest('.nav-trigger')) setOpen(true);
+  });
+  shell.addEventListener('focusout', function (event) {
+    if (!shell.contains(event.relatedTarget)) setOpen(false);
+  });
 })();
 </script>
 
@@ -876,13 +963,16 @@ $menu = [
 </script>
 <?php endif; ?>
 <?php if ($p === 'main'): ?>
-<section><div class="in">
-  <h2 class="h">PRODUCTS</h2>
-  <p class="lead">BOLIN 한국 총판 소다미디어</p>
+<section style="background:#111"><div class="in">
+  <h2 class="h">Soda Media</h2>
+  <p class="lead">BOLIN 한국 총판</p>
   <div class="grid">
-    <a class="card" href="?p=product"><div class="thumb"><img src="../b-pl-img/ms1_li1.jpg" alt="고객지원"><span>01</span></div><div class="b"><h3>고객지원</h3><p>MORE VIEW →</p></div></a>
-    <a class="card" href="?p=support"><div class="thumb"><img src="../b-pl-img/ms1_li2.jpg" alt="고객지원"><span>02</span></div><div class="b"><h3>고객지원</h3><p>MORE VIEW →</p></div></a>
-    <a class="card" href="?p=demo"><div class="thumb"><img src="../b-pl-img/ms1_li3.jpg" alt="데모요청"><span>03</span></div><div class="b"><h3>데모요청</h3><p>MORE VIEW →</p></div></a>
+    <a class="card" href="?p=product"><div class="thumb">
+      <img src="../b-pl-img/ms1_li1.jpg" alt="Product"></div><div class="b"><h3>Product</h3></div></a>
+    <a class="card" href="?p=support"><div class="thumb">
+      <img src="../b-pl-img/ms1_li2.jpg" alt="고객지원"></div><div class="b"><h3>고객지원</h3></div></a>
+    <a class="card" href="?p=demo"><div class="thumb">
+      <img src="../b-pl-img/ms1_li3.jpg" alt="데모요청"></div><div class="b"><h3>데모요청</h3></div></a>
   </div>
 </div></section>
 <section><div class="in">
@@ -931,7 +1021,7 @@ $menu = [
   observer.observe(video);
 })();
 </script>
-<section><div class="in">
+<section style="background:#111"><div class="in">
   <h2 class="h">Reference</h2>
   <p class="lead">설치 사례</p>
   <div class="grid">
@@ -973,9 +1063,9 @@ $menu = [
         </div>
   </div>
 </div></section>
-<section class="gray"><div class="in">
+<section class="gray" style="background:#080808"><div class="in">
   <h2 class="h">CONTACT US</h2>
-  <p class="lead">상담신청을 통해 문의를 남겨주세요.</p>
+  <p class="lead">문의사항이 있으시면 아래 연락처로 연락주시기 바랍니다.</p>
   <div class="contact">
     <div><b>구매 문의</b>070-8866-1171</div>
     <div><b>영업시간</b>오전 10시 ~ 오후 7시 (토/일/공휴일 휴무)</div>
@@ -989,42 +1079,21 @@ $menu = [
         <img src="../b-pl-img/bar-bn-a1.jpg" alt="제품소개">
         </div>
   </div></section>
-<section><div class="in">
-  <div class="sec-head"><h2 class="h2l">자료실</h2><a class="plus" href="?p=support" aria-label="자료실 더보기">+</a></div>
-  <ul class="pds-mini">
-    <?php if (!$pdsAll): ?><li><a href="?p=support"><strong>BOLIN 제품 자료를 준비하고 있습니다.</strong><span>자료실</span></a></li><?php endif; ?>
-    <?php foreach (array_slice($pdsAll, 0, 3, true) as $id => $it): ?>
-      <li><a href="?p=pds&id=<?= $e($id) ?>"><strong><?= $e($it['title']) ?></strong><span><?= $e($pdsCats[$it['cat']]) ?></span></a></li>
-    <?php endforeach; ?>
-  </ul>
-</div></section>
-<section><div class="in">
-  <div class="sec-head"><h2 class="h2l">문의하기</h2><a class="plus" href="?p=support#inquiry" aria-label="문의하기 더보기">+</a></div>
-  <ul class="pds-mini">
-    <?php foreach ($mainInquiries as $row): ?>
-      <li><a href="?p=support&post=<?= (int)$row['id'] ?>#inquiry"><strong><span aria-hidden="true">🔒</span> <?= $e($row['title']) ?></strong><span><?= $e($row['category']) ?></span></a></li>
-    <?php endforeach; ?>
-    <?php if (!$mainInquiries): ?><li><a href="?p=support#inquiry"><strong>등록된 문의글이 없습니다.</strong></a></li><?php endif; ?>
-  </ul>
-</div></section>
-<section class="loc"><div class="in">
-  <div class="sec-head"><h2 class="h2l">LOCATION</h2><a class="plus" href="?p=way" aria-label="오시는길">+</a></div>
-  <iframe class="map" title="오시는길" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-    src="https://maps.google.com/maps?q=<?= urlencode('서울특별시 강서구 양천로 400-12') ?>&z=16&output=embed"></iframe>
-</div></section>
 
 <?php elseif ($p === 'product'): ?>
-<div class="sub"><div class="title"><h1>제품정보</h1></div></div>
+<div class="sub"><div class="title"><h1>Product</h1></div></div>
 <section><div class="in">
   <div class="tabs">
     <?php foreach (['' => '전체'] + $pcats as $k => $v): ?>
       <a href="?p=product&cat=<?= urlencode($k) ?>" class="<?= $k === $pcat ? 'on' : '' ?>"><?= $e($v) ?></a>
     <?php endforeach; ?>
   </div>
-  <?php foreach ($pcats as $ck => $cv): if ($pcat !== '' && $pcat !== $ck) continue; ?>
+  <?php foreach ($pcats as $ck => $cv):
+    $categoryProducts = array_filter($filteredProducts, fn($x) => $x['cat'] === $ck);
+    if (!$categoryProducts) continue; ?>
     <h3 class="grp"><?= $e($cv) ?> <small class="category-note"><?= $e($pcatNotes[$ck]) ?></small></h3>
     <div class="grid">
-    <?php foreach ($products as $x): if ($x['cat'] !== $ck) continue; ?>
+    <?php foreach ($categoryProducts as $x): ?>
       <a class="card" href="?p=detail&id=<?= $e($x['slug']) ?>">
         <div class="thumb pimg"><img src="<?= $e($img($x['gallery'][0] ?? '')) ?>" alt="<?= $e($x['name']) ?>" loading="lazy"></div>
         <div class="b"><h3><?= $e($x['name']) ?></h3><small><?= $e($cv) ?></small></div>
@@ -1032,12 +1101,13 @@ $menu = [
     <?php endforeach; ?>
     </div>
   <?php endforeach; ?>
+  <?php if ($q !== '' && !$filteredProducts): ?><p class="search-empty">검색 결과가 없습니다. 다른 검색어를 입력해 주세요.</p><?php endif; ?>
 </div></section>
 
 <?php elseif ($p === 'detail'): ?>
 <div class="sub"><div class="title"><h1><?= $e($prd['name']) ?></h1></div></div>
 <section><div class="in" style="max-width:900px">
-  <p class="crumb"><a href="?p=product">제품정보</a> &gt; <a href="?p=product&cat=<?= $e($prd['cat']) ?>"><?= $e($pcats[$prd['cat']]) ?></a> &gt; <?= $e($prd['name']) ?></p>
+  <p class="crumb"><a href="?p=product">Product</a> &gt; <a href="?p=product&cat=<?= $e($prd['cat']) ?>"><?= $e($pcats[$prd['cat']]) ?></a> &gt; <?= $e($prd['name']) ?></p>
   <?php if ($prd['gallery']): ?>
   <div class="gal">
     <img id="main-img" src="<?= $e($img($prd['gallery'][0])) ?>" alt="<?= $e($prd['name']) ?>">
@@ -1321,7 +1391,7 @@ $menu = [
   <iframe class="map" title="오시는길" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
     src="https://maps.google.com/maps?q=<?= urlencode('서울특별시 강서구 양천로 400-12') ?>&z=16&output=embed"></iframe>
   <table class="way-tb">
-    <tr><th>주소</th><td>서울특별시 강서구 양천로 400-12 (더리브골드타워) 1112호(사무실) 1114호(STUDIO)</td></tr>
+    <tr><th>주소</th><td>서울특별시 강서구 양천로 400-12 (더리브골드타워) 1114호</td></tr>
     <tr><th>대표번호</th><td>070-8866-1171</td></tr>
     <tr><th>메일</th><td>sodamedia@hanmail.net</td></tr>
   </table>
@@ -1385,16 +1455,44 @@ $menu = [
 </div></section>
 <?php endif; ?>
 
-<footer><div class="in">
-  <img class="f-logo" src="../b-pl-img/logo.png" alt="PLUM 소다미디어">
-  <ul class="f-info">
-    <li><span><b>상호명</b> : 소다미디어</span><span><b>주소</b> : 서울특별시 강서구 양천로 400-12 (더리브골드타워) 1112호(사무실) 1114호(STUDIO)</span></li>
-    <li><span><b>대표번호</b> : 070-8866-1171</span></li>
-    <li><span><b>사업자등록번호</b> : 181-07-00410</span><span><b>통신판매업신고</b> : 2020-서울강서-2732</span></li>
-    <li><span><b>개인정보관리자</b> : 서정우</span><span><b>메일</b> : sodamedia@hanmail.net</span></li>
-    <li><span><b>영업시간</b> : 오전 10시 ~ 오후 7시 (토/일/공휴일 휴무)</span><span><b>점심식사</b> : 오후 1시 ~ 2시</span></li>
-  </ul>
-  <p class="copy">COPYRIGHT(C) 소다미디어 ALL RIGHT RESERVED.</p>
-</div></footer>
+<footer>
+  <div class="footer-main">
+    <div class="footer-grid in">
+      <div class="footer-logo">
+        <img class="f-logo" src="../b-pl-img/logo.png" alt="PLUM 소다미디어">
+      </div>
+      <div class="footer-column footer-company">
+        <ul class="f-info">
+          <li><span>소다미디어</span></li>
+          <li><span><b>주소</b> : 서울특별시 강서구 양천로 400-12 (더리브골드타워) 1114호</span></li>
+        </ul>
+      </div>
+      <div class="footer-column footer-business">
+        <ul class="f-info">
+          <li><span><b>사업자등록번호</b> : 181-07-00410</span></li>
+          <li><span><b>통신판매업신고</b> : 2020-서울강서-2732</span></li>
+        </ul>
+      </div>
+      <div class="footer-column footer-contact">
+        <ul class="f-info">
+          <li><span><b>대표번호</b> : 070-8866-1171</span></li>
+          <li><span><b>개인정보관리자</b> : 서정우</span></li>
+          <li><span><b>메일</b> : sodamedia@hanmail.net</span></li>
+        </ul>
+      </div>
+      <div class="footer-column footer-hours">
+        <ul class="f-info">
+          <li><span><b>영업시간</b> : 오전 10시 ~ 오후 7시 (토/일/공휴일 휴무)</span></li>
+          <li><span><b>점심식사</b> : 오후 1시 ~ 2시</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="in">
+      <p class="copy">COPYRIGHT(C) 소다미디어 ALL RIGHT RESERVED.</p>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
