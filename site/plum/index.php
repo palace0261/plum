@@ -812,26 +812,13 @@ $seoImage = $siteOrigin . $assetBase . '/b-pl-img/' . ($p === 'detail' && $prd
 <?php
 $menu = [
     ['Product', '?p=product', [
-        ['INDOOR', '?p=product&cat=INDOOR%20PTZ%20CAMERAS', [
-            ['Standard IP', '?p=product&cat=INDOOR%20PTZ%20CAMERAS'],
-            ['NDI', '?p=product&cat=INDOOR%20PTZ%20CAMERAS'],
-            ['Dante AV', '?p=product&cat=INDOOR%20PTZ%20CAMERAS'],
-        ]],
-        ['OUTDOOR', '?p=product&cat=OUTDOOR%20PTZ%20CAMERAS', [
-            ['Standard IP', '?p=product&cat=OUTDOOR%20PTZ%20CAMERAS'],
-            ['NDI', '?p=product&cat=OUTDOOR%20PTZ%20CAMERAS'],
-        ]],
-        ['RANGE', '?p=product&cat=RANGE%20PTZ%20CAMERA', [
-            ['NDI', '?p=product&cat=RANGE%20PTZ%20CAMERA'],
-        ]],
-        ['ENCODER', '?p=product&cat=ENCODER%20%26%20DECODERS', [
-            ['Standard IP', '?p=product&cat=ENCODER%20%26%20DECODERS'],
-            ['NDI', '?p=product&cat=ENCODER%20%26%20DECODERS'],
-            ['Dante AV', '?p=product&cat=ENCODER%20%26%20DECODERS'],
-        ]],
-        ['CONTROLLERS', '?p=product', []],
-        ['NDI', '?p=product', []],
-        ['Dante AV', '?p=product', []],
+        ['INDOOR', '?p=product&cat=INDOOR%20PTZ%20CAMERAS', []],
+        ['OUTDOOR', '?p=product&cat=OUTDOOR%20PTZ%20CAMERAS', []],
+        ['RANGE', '?p=product&cat=RANGE%20PTZ%20CAMERA', []],
+        ['ENCODER', '?p=product&cat=ENCODER%20%26%20DECODERS', []],
+        ['CONTROLLERS', '?p=product&cat=CONTROLLERS', []],
+        ['NDI', '?p=product&cat=NDI', []],
+        ['Dante AV', '?p=product&cat=DANTE+AV', []],
     ]],
     ['견적문의', '?p=support#consult', [
     ]],
@@ -918,11 +905,21 @@ $menu = [
   var menu = document.getElementById('megaMenu');
   var menuToggle = document.getElementById('megaToggle');
   var productToggle = document.getElementById('productToggle');
-  var triggers = Array.prototype.slice.call(document.querySelectorAll('.nav-trigger'));
+  var navInner = document.querySelector('.nav-inner');
   var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var closeTimer, pinnedOpen = false;
+  function positionMenu() {
+    var productRect = productToggle.getBoundingClientRect();
+    var shellRect = shell.getBoundingClientRect();
+    menu.style.setProperty('--mega-left', (productRect.left - shellRect.left) + 'px');
+    menu.style.setProperty('--mega-width', productRect.width + 'px');
+  }
   function setOpen(open) {
     window.clearTimeout(closeTimer);
+    if (open) {
+      navInner.scrollLeft = 0;
+      positionMenu();
+    }
     shell.classList.toggle('mega-open', open);
     menu.setAttribute('aria-hidden', open ? 'false' : 'true');
     menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -933,6 +930,8 @@ $menu = [
     pinnedOpen = !pinnedOpen;
     setOpen(pinnedOpen);
   }
+  window.addEventListener('resize', positionMenu);
+  navInner.addEventListener('scroll', positionMenu);
   menuToggle.addEventListener('click', function () {
     if (pinnedOpen) {
       pinnedOpen = false;
@@ -942,21 +941,18 @@ $menu = [
     setOpen(!shell.classList.contains('mega-open'));
   });
   productToggle.addEventListener('click', togglePinned);
-  triggers.forEach(function (trigger) {
-    if (canHover) trigger.addEventListener('pointerenter', function () { setOpen(true); });
-  });
   if (canHover) {
-    shell.addEventListener('pointerleave', function () {
+    function scheduleClose() {
+      window.clearTimeout(closeTimer);
       closeTimer = window.setTimeout(function () {
         if (!pinnedOpen) setOpen(false);
       }, 180);
-    });
+    }
+    productToggle.addEventListener('pointerenter', function () { setOpen(true); });
+    productToggle.addEventListener('pointerleave', scheduleClose);
+    shell.addEventListener('pointerleave', scheduleClose);
     menu.addEventListener('pointerenter', function () { window.clearTimeout(closeTimer); });
-    menu.addEventListener('pointerleave', function () {
-      closeTimer = window.setTimeout(function () {
-        if (!pinnedOpen) setOpen(false);
-      }, 180);
-    });
+    menu.addEventListener('pointerleave', scheduleClose);
   }
   document.addEventListener('click', function (event) {
     if (event.target.closest('#footerMegaToggle')) {
@@ -966,8 +962,7 @@ $menu = [
       menuToggle.click();
       return;
     }
-    if (!shell.contains(event.target)) {
-      pinnedOpen = false;
+    if (!shell.contains(event.target) && !pinnedOpen) {
       setOpen(false);
     }
   });
@@ -976,10 +971,6 @@ $menu = [
       pinnedOpen = false;
       setOpen(false);
     }
-  });
-  shell.addEventListener('focusin', function (event) {
-    var trigger = event.target.closest('.nav-trigger');
-    if (canHover && trigger && trigger !== productToggle) setOpen(true);
   });
   shell.addEventListener('focusout', function (event) {
     if (!shell.contains(event.relatedTarget) && !pinnedOpen) setOpen(false);
@@ -1294,7 +1285,13 @@ $menu = [
     </div>
   <?php endif; ?>
   <p style="text-align:center;margin-top:40px"><a href="?p=demo"><button type="button" style="padding:14px 40px">데모 요청</button></a></p>
-  <p class="note">제품 정보 출처: <a href="<?= $e($prd['source']) ?>" target="_blank" rel="noopener"><?= $e($prd['source_label'] ?? 'BOLIN 한국 총판 소다미디어') ?></a><?php if (!empty($prd['spec_source']) && $prd['spec_source'] !== $prd['source']): ?> · <a href="<?= $e($prd['spec_source']) ?>" target="_blank" rel="noopener">BOLIN 공식 사양</a><?php endif; ?></p>
+  <?php
+  $showSource = !empty($prd['source']) && ($prd['source_label'] ?? 'BOLIN 한국 총판 소다미디어') !== 'BOLIN 한국 총판 소다미디어';
+  $showSpecSource = !empty($prd['spec_source']) && (!$showSource || $prd['spec_source'] !== $prd['source']);
+  ?>
+  <?php if ($showSource || $showSpecSource): ?>
+    <p class="note">제품 정보 출처: <?php if ($showSource): ?><a href="<?= $e($prd['source']) ?>" target="_blank" rel="noopener"><?= $e($prd['source_label']) ?></a><?php endif; ?><?php if ($showSource && $showSpecSource): ?> · <?php endif; ?><?php if ($showSpecSource): ?><a href="<?= $e($prd['spec_source']) ?>" target="_blank" rel="noopener">BOLIN 공식 사양</a><?php endif; ?></p>
+  <?php endif; ?>
 </div></section>
 
 <?php elseif ($p === 'pds'): ?>

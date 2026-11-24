@@ -69,25 +69,25 @@ header.scrolled{background:var(--paper);color:var(--ink);box-shadow:0 8px 24px r
 .nav-caret svg{display:block;width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
 .header-shell.mega-open .nav-caret svg{transform:rotate(180deg)}
 .nav-trigger:hover,.mega-open .nav-trigger{background:transparent;color:#fff;transform:none;filter:none}
-.mega-menu{position:absolute;top:100%;left:0;z-index:110;width:100%;max-height:calc(100vh - 170px);overflow:auto;background: #ebebeb;border:0;box-shadow:none;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,visibility .2s}
+.mega-menu{position:absolute;top:100%;left:var(--mega-left,0px);z-index:110;width:var(--mega-width,120px);max-height:calc(100vh - 170px);overflow:auto;background: #ebebeb;border:0;box-shadow:none;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,visibility .2s}
 .header-shell.mega-open .mega-menu{opacity:1;visibility:visible;pointer-events:auto}
-.mega-inner.in{display:block;max-width:1320px;height:auto;padding: 1rem 30px 2rem;}
+.mega-inner.in{display:block;max-width:1320px;height:auto;padding: 1rem 1rem 1rem;text-align: left;}
 .mega-columns{/* display:grid; *//* grid-template-columns: repeat(8,minmax(0,1fr)); */gap:0}
-.mega-column{padding:0 20px;border:0;text-align:center}
+.mega-column{padding:0;border:0;text-align:center}
 .mega-column.product-mega-column{grid-column: span 6;}
-.product-mega-column .mega-links{grid-template-columns: repeat(8,minmax(0,1fr));align-content:start;gap: 1.5rem;}
+.product-mega-column .mega-links{grid-template-columns:minmax(0,1fr);align-content:start;gap: 0.5rem;text-align: left;}
 .mega-column:not(.product-mega-column){grid-column:span 2}
 .mega-links{display:grid;gap:8px}
-.mega-links a{padding:0;color: #111111;font-size:.8rem}
+.mega-links a{padding:0;color: #111111;font-size:.8rem;overflow-wrap:anywhere}
 .mega-links a:hover{ color: #ccc;}
-.mega-link-group{/* display:grid; */gap:5px;}
+.mega-link-group{display:grid;gap:5px;}
 .mega-category{color: #111;font-size:.82rem}
 .mega-sub-links{display:grid;gap:5px}
 .mega-sub-links a{color: #111;font-size:.74rem}
 
 .bar-banner{overflow: hidden;}
 
-.product-mega-column .mega-links > div > a:first-of-type{font-weight:bold;}
+.product-mega-column .mega-links > div > a:first-of-type{/* font-weight:bold; */}
 
 .hero{position:relative;overflow:hidden;width:min(100% - 48px,1440px);height:clamp(470px,57vw,730px);min-height:0;margin:24px auto 70px;border-radius:18px;background:#080808;color:#fff;text-align:center}
 .hero .slide{position:absolute;inset:0;display:flex;align-items:center;background-position:center;background-size:cover;opacity:0;pointer-events:none;transition:opacity 1s}
@@ -310,7 +310,7 @@ footer{padding:0;border-top:1px solid #242424;background:#080808;color:#aaa59b;f
 @media (max-width:760px){.wero,.split{grid-template-columns:1fr}.wero{padding:32px 22px}nav{display:none}}
 
 @media(max-width:1100px){
-  .mega-column{padding:6px 12px 8px}
+  .mega-column{padding:0}
 }
 
 @media(max-width:900px){
@@ -320,12 +320,12 @@ footer{padding:0;border-top:1px solid #242424;background:#080808;color:#aaa59b;f
   .header-top.in{height:74px}
   .nav-inner.in{padding:0 18px}
   .nav-trigger{gap:8px;padding:0 10px;font-size:.78rem}
-  .mega-inner.in{padding:20px 18px 26px}
+  .mega-inner.in{padding:20px 8px 26px}
   .mega-columns{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:22px}
   .mega-column.product-mega-column{grid-column:span 2}
   .product-mega-column .mega-links{grid-template-columns: repeat(1,minmax(0,1fr));}
   .mega-column:not(.product-mega-column){grid-column:span 1}
-  .mega-column{padding:6px 14px 8px}
+  .mega-column{padding:0}
   .hero{width:calc(100% - 32px);height:clamp(440px,65vw,650px);margin:16px auto 52px}
   .hero .s-p{font-size:clamp(2.8rem,8vw,5rem)}
   .hero .dots{padding:0 24px}
@@ -391,9 +391,9 @@ footer{padding:0;border-top:1px solid #242424;background:#080808;color:#aaa59b;f
   .nav-inner.in{padding:0 10px}
   .nav-trigger{gap:4px;padding:0 3px;font-size:.7rem;letter-spacing:0}
   .mega-menu{max-height:calc(100vh - 144px)}
-  .mega-inner.in{padding:20px 10px}
+  .mega-inner.in{padding:20px 8px}
   .mega-columns{column-gap:0;row-gap:14px}
-  .mega-column{padding:4px 10px}
+  .mega-column{padding:0}
   .mega-links a,.mega-sub-links a{font-size:.74rem}
   .hero{width:calc(100% - 24px);height:20rem;min-height:0;margin:12px auto 40px;border-radius:12px}
   .hero .slide{background-position:62% center}
