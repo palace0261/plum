@@ -833,9 +833,9 @@ $menu = [
         ['NDI', '?p=product', []],
         ['Dante AV', '?p=product', []],
     ]],
-    ['상담신청', '?p=support#consult', [
+    ['견적문의', '?p=support#consult', [
     ]],
-    ['문의하기', '?p=support#inquiry', [
+    ['기술문의', '?p=support#inquiry', [
     ]],
     ['데모요청', '?p=demo', [
     ]],
@@ -847,17 +847,22 @@ $menu = [
 ?>
 <header id="hd"><div class="header-shell">
   <div class="utility-row in">
-    <span class="utility-note">Soda Media</span>
+    <span class="utility-note">SODA MEDIA</span>
     <div class="utility-links">
-      <a href="?p=support#consult">제품문의</a>
-      <a href="?p=support">기술지원</a>
+      <a href="?p=support#consult">견적문의</a>
+      <a href="?p=support#inquiry">기술문의</a>
       <a href="?p=way">오시는길</a>
       <a href="?p=demo">데모신청</a>
     </div>
   </div>
   <div class="header-top in">
-    <a class="logo" href="?p=main"><img class="lg" src="../b-pl-img/logo.png" alt="PLUM"><img class="lg-on" src="../b-pl-img/logo_on.png" alt=""><span class="logo-label"><strong><span style="
-    font-weight: 200;
+    <a class="logo" href="?p=main">
+      <img class="lg" src="../b-pl-img/logo.png" alt="PLUM_LOGO">
+      <img class="lg-on" src="../b-pl-img/logo_on.png" alt="PLUM_LOGO">
+      <span class="logo-label">
+        <strong>
+          <span style="
+  font-weight: 200;
 ">ㅣ</span> BOLIN 한국 총판</strong></span></a>
     <div class="header-actions">
       <form class="site-search" method="get" role="search">
@@ -1040,8 +1045,8 @@ $menu = [
 <?php endif; ?>
 <?php if ($p === 'main'): ?>
 <section style="background:#111"><div class="in">
-  <h2 class="h">Soda Media</h2>
-  <p class="lead">BOLIN 한국 총판</p>
+  <h2 class="h">소다미디어</h2>
+  <p class="lead">BOLIN Technology 한국 총판으로서 최선의 고객 지원 서비스를 제공하기 위해 끊임없이 노력하며, 고객이 믿고 맡길 수 있는 든든한 파트너가 되겠습니다.</p>
   <div class="mobile-carousel-wrap">
   <div class="grid mobile-carousel">
     <a class="card" href="?p=product"><div class="thumb">
@@ -1055,9 +1060,10 @@ $menu = [
   </div>
 </div></section>
 <section><div class="in">
+  <h2 class="new">NEW PTZ</h2>
   <h2 class="h">Range</h2>
   <p class="lead">All Weather 4K60</p>
-  <p class="lead"><a href="?p=detail&id=RANGE">자세히 보기 ></a></p>
+  <p class="lead"><a href="?p=detail&id=RANGE" style="color:var(--fs)">자세히 보기 ></a></p>
   <div>
     <video id="product-video" class="product-video" src="../b-pl-img/bo-rg-a.webm" controls muted playsinline preload="auto"></video>
   </div>
@@ -1178,8 +1184,8 @@ $menu = [
 </div></section>
 <section>
   <div class="grid">
-        <div class="thumb">
-        <img src="../b-pl-img/bar-bn-a1.jpg" alt="제품소개">
+        <div class="thumb" id="pl-bar-banner-0a1">
+        <img src="../b-pl-img/bar-bn-a1.jpg" alt="BOLIN">
         </div>
   </div></section>
 
@@ -1309,7 +1315,7 @@ $menu = [
 
 <?php elseif ($p === 'support'): ?>
 <div class="sub"><div class="title"><h1>고객지원</h1></div></div>
-<section><div class="in">
+<section style="display:none;"><div class="in">
   <h2 class="h">자료실</h2><p class="lead">매뉴얼 및 설치 도구</p>
   <div style="display:flex;gap:8px;justify-content:center;margin-bottom:20px;flex-wrap:wrap">
     <?php foreach (['' => '전체'] + $pdsCats as $k => $v): ?>
@@ -1331,7 +1337,7 @@ $menu = [
   </table>
 </div></section>
 <section class="gray"><div class="in">
-  <h2 class="h" id="consult">기술문의</h2><p class="lead">&nbsp;</p>
+  <h2 class="h" id="consult">견적문의</h2><p class="lead">&nbsp;</p>
   <?php if ($sent): ?><div class="ok">문의가 접수되었습니다.</div><?php endif; ?>
   <?php if ($consultError !== ''): ?><div role="alert" style="padding:12px;margin:12px 0;color:#9b1c1c;background:#fff2f2;border:1px solid #e6b8b8"><?= $e($consultError) ?></div><?php endif; ?>
   <form method="post" action="?p=support#consult">
@@ -1345,7 +1351,7 @@ $menu = [
   </form>
 </div></section>
 <section><div class="in" style="max-width:900px">
-  <h2 class="h" id="inquiry">문의하기</h2>
+  <h2 class="h" id="inquiry">기술문의</h2>
   <p class="lead">모든 게시글은 비밀글로 등록되며 작성자와 관리자만 내용을 확인할 수 있습니다.</p>
   <?php if ($boardError !== ''): ?><div role="alert" style="padding:12px;margin:12px 0;color:#9b1c1c;background:#fff2f2;border:1px solid #e6b8b8"><?= $e($boardError) ?></div><?php endif; ?>
   <?php if ($boardNotice !== ''): ?><div role="status" style="padding:12px;margin:12px 0;background:#f7f7f7;border:1px solid #ddd"><?= $e($boardNotice) ?></div><?php endif; ?>
@@ -1478,57 +1484,6 @@ $menu = [
 <?php elseif ($p === 'about'): ?>
 <div class="sub"><div class="title"><h1>회사소개</h1></div></div>
 <section><div class="in" style="max-width:1200px">
-
-<style>
-
-
-img{max-width:100%;display:block}
-.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
-header{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
-.logo{font-weight:900;font-size:1.15rem;letter-spacing:-.02em}
-.logo small{font-weight:500;color:var(--muted);margin-left:8px;font-size:.85rem}
-nav a{color:var(--muted);text-decoration:none;margin-left:18px;font-size:.92rem}
-nav a:hover,nav a:focus-visible{color:var(--plum)}
-a:focus-visible,.btn:focus-visible{outline:3px solid var(--plum);outline-offset:3px}
-.wero{color:#fff;border-radius:28px; display:grid;grid-template-columns:1fr;gap:32px;align-items:center}
-.wero h1{font-size:clamp(1.9rem,4.6vw,3rem);line-height:1.25;letter-spacing:-.03em;margin:0 0 18px;font-weight:900}
-.wero p{color:rgba(255,255,255,.82);}
-.btns{display:flex;gap:12px;flex-wrap:wrap}
-.btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:700;text-decoration:none;font-size:.95rem}
-.btn.p{background:#fff;color:var(--deep)}
-.btn.g{border:1.5px solid rgba(255,255,255,.5);color:#fff}
-.facts{display:flex;gap:26px;flex-wrap:wrap;margin-top:30px;padding-top:22px;border-top:1px solid rgba(255,255,255,.18);font-size:.9rem;color:rgba(255,255,255,.75)}
-.facts b{display:block;color:#fff;font-size:1.15rem}
-.wero img{border-radius:20px;width:100%}
-.wero section{padding:5rem 0 0}
-h2{font-size:clamp(1.5rem,3.2vw,2.1rem);line-height:1.35;letter-spacing:-.02em;margin:0 0 16px;font-weight:900}
-.wead{color:var(--muted);margin:0 0 28px}
-.split{display:grid;grid-template-columns:1fr;gap:36px;align-items:center; grid-auto-flow:column;}
-.split img{border-radius:20px;border:1px solid var(--line)}
-.wards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
-.ward{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px}
-.ward h3{margin:0 0 8px;font-size:1.1rem; text-align:left;}
-.ward p{margin:0;color:var(--muted);font-size:.95rem}
-.steps{list-style:none;margin:0;padding:0;counter-reset:s}
-.steps li{counter-increment:s;position:relative;padding:0 0 22px 52px;border-left:2px solid var(--line);margin-left:16px}
-.steps li:last-child{border-color:transparent;padding-bottom:0}
-.steps li::before{content:counter(s);position:absolute;left:-17px;top:0;width:32px;height:32px;border-radius:50%;background:var(--plum);color:var(--on-plum);font-weight:700;display:grid;place-items:center;font-size:.9rem}
-.steps b{display:block}
-.steps span{color:var(--muted);font-size:.95rem}
-.time{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
-.time div{background:var(--tint);border-radius:18px;padding:26px}
-.time h3{margin:0 0 6px;font-size:1.05rem; text-align:left;}
-.time .y{color:var(--plum);font-weight:900;font-size:1.5rem;display:block}
-.time ul{margin:8px 0 0;padding-left:1.1em;color:var(--muted);font-size:.95rem}
-.promise{background:var(--deep);color:#fff;border-radius:28px;padding:44px 36px}
-.promise h2{color:#fff}
-.promise ol{margin:0 0 22px;padding-left:1.3em;color:rgba(255,255,255,.88)}
-.promise li{margin-bottom:10px}
-.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#ccc;margin-right:8px;vertical-align:middle}
-.ph{color:var(--plum);font-weight:500}
-footer{padding:48px 0 40px;color:var(--muted);font-size:.85rem}
-@media (max-width:760px){.wero,.split{grid-template-columns:1fr}.wero{padding:32px 22px}nav{display:none}}
-</style>
 
 
 <div class="wero">
@@ -1680,7 +1635,7 @@ footer{padding:48px 0 40px;color:var(--muted);font-size:.85rem}
   <div class="footer-main">
     <div class="footer-grid in">
       <div class="footer-logo">
-        <img class="f-logo" src="../b-pl-img/logo.png" alt="PLUM 소다미디어">
+        <img class="f-logo" src="../b-pl-img/logo_on.png" alt="PLUM 소다미디어">
       </div>
       <div class="footer-column footer-company">
         <ul class="f-info">
