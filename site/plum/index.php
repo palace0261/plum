@@ -45,16 +45,34 @@ if ($p === 'pds' && !$view) $p = 'support';
 
 $products = json_decode((string)@file_get_contents(__DIR__ . '/data/products.json'), true) ?: [];
 $products = array_column($products, null, 'slug');
-$pcats = ['camera' => 'Red Line'];
-$pcatNotes = ['camera' => 'BOLIN PTZ Camera'];
+$products = array_filter($products, fn($product) => ($product['enabled'] ?? true) !== false);
+$pcats = [
+    'INDOOR PTZ CAMERAS' => 'INDOOR',
+    'OUTDOOR PTZ CAMERAS' => 'OUTDOOR',
+    'RANGE PTZ CAMERA' => 'RANGE',
+    'ENCODER & DECODERS' => 'ENCODER & DECODERS',
+    'CONTROLLERS' => 'CONTROLLERS',
+    'NDI' => 'NDI',
+    'DANTE AV' => 'Dante AV',
+];
+$pcatNotes = [
+    'INDOOR PTZ CAMERAS' => 'Standard IP',
+    'OUTDOOR PTZ CAMERAS' => 'Standard IP',
+    'RANGE PTZ CAMERA' => '',
+    'ENCODER & DECODERS' => '',
+    'CONTROLLERS' => '',
+    'NDI' => '',
+    'DANTE AV' => '',
+];
 
 $pcat = $_GET['cat'] ?? '';
 if (!isset($pcats[$pcat])) $pcat = '';
 $prd = $products[$_GET['id'] ?? ''] ?? null;
 if ($p === 'detail' && !$prd) $p = 'product';
-$filteredProducts = array_filter($products, fn($x) => ($pcat === '' || $x['cat'] === $pcat)
+$filteredProducts = array_filter($products, fn($x) => ($pcat === '' || $x['cat'] === $pcat
+        || in_array($pcat, $x['also_cats'] ?? [], true))
     && ($q === '' || stripos($x['name'] . ' ' . ($x['summary'] ?? ''), $q) !== false));
-$img = fn($f) => '../b-pl-img/' . $f;
+$img = fn($f) => preg_match('~^https?://~i', (string)$f) ? (string)$f : '../b-pl-img/' . $f;
 $e = fn($s) => htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
 function canonBoardIpInCidr(string $ip, string $cidr): bool
@@ -794,19 +812,37 @@ $seoImage = $siteOrigin . $assetBase . '/b-pl-img/' . ($p === 'detail' && $prd
 <?php
 $menu = [
     ['Product', '?p=product', [
-        ['PTZ Camera', '?p=product', [['Red Line', '?p=product&cat=camera']]],
-        ['Controller', '?p=product&q=Controller', []],
+        ['INDOOR', '?p=product&cat=INDOOR%20PTZ%20CAMERAS', [
+            ['Standard IP', '?p=product&cat=INDOOR%20PTZ%20CAMERAS'],
+            ['NDI', '?p=product&cat=INDOOR%20PTZ%20CAMERAS'],
+            ['Dante AV', '?p=product&cat=INDOOR%20PTZ%20CAMERAS'],
+        ]],
+        ['OUTDOOR', '?p=product&cat=OUTDOOR%20PTZ%20CAMERAS', [
+            ['Standard IP', '?p=product&cat=OUTDOOR%20PTZ%20CAMERAS'],
+            ['NDI', '?p=product&cat=OUTDOOR%20PTZ%20CAMERAS'],
+        ]],
+        ['RANGE', '?p=product&cat=RANGE%20PTZ%20CAMERA', [
+            ['NDI', '?p=product&cat=RANGE%20PTZ%20CAMERA'],
+        ]],
+        ['ENCODER', '?p=product&cat=ENCODER%20%26%20DECODERS', [
+            ['Standard IP', '?p=product&cat=ENCODER%20%26%20DECODERS'],
+            ['NDI', '?p=product&cat=ENCODER%20%26%20DECODERS'],
+            ['Dante AV', '?p=product&cat=ENCODER%20%26%20DECODERS'],
+        ]],
+        ['CONTROLLERS', '?p=product', []],
+        ['NDI', '?p=product', []],
+        ['Dante AV', '?p=product', []],
     ]],
-    ['고객지원', '?p=support', [
-        ['매뉴얼', '?p=support&cat=manual', []],
-        ['상담신청', '?p=support#consult', []],
-        ['문의하기', '?p=support#inquiry', []],
+    ['상담신청', '?p=support#consult', [
+    ]],
+    ['문의하기', '?p=support#inquiry', [
+    ]],
+    ['데모요청', '?p=demo', [
     ]],
     ['회사소개', '?p=about', [
-        ['인사말', '?p=about#greet', []],
-        ['오시는길', '?p=way', []],
     ]],
-    ['데모요청', '?p=demo', []],
+    ['오시는길', '?p=way', [
+    ]]
 ];
 ?>
 <header id="hd"><div class="header-shell">
@@ -837,28 +873,30 @@ $menu = [
   </div>
   <nav class="site-nav" aria-label="주 메뉴"><div class="nav-inner in">
     <?php foreach ($menu as $m): ?>
-      <a class="nav-trigger" href="<?= $e($m[1]) ?>">
-        <?= $e($m[0]) ?>
-      </a>
+      <?php if ($m[0] === 'Product'): ?>
+        <button type="button" class="nav-trigger" id="productToggle" aria-expanded="false" aria-controls="megaMenu">
+          <span><?= $e($m[0]) ?></span><span class="nav-caret" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 14 6-6 6 6"/></svg></span>
+        </button>
+      <?php else: ?>
+        <a class="nav-trigger" href="<?= $e($m[1]) ?>"><?= $e($m[0]) ?></a>
+      <?php endif; ?>
     <?php endforeach; ?>
   </div></nav>
   <div class="mega-menu" id="megaMenu" aria-hidden="true">
     <div class="mega-inner in">
       <div class="mega-columns">
         <?php foreach ($menu as $m): ?>
-          <section class="mega-column">
+          <section class="mega-column<?= $m[0] === 'Product' ? ' product-mega-column' : '' ?>">
             <div class="mega-links">
               <?php foreach ($m[2] as $item): ?>
                 <div class="mega-link-group">
                   <a class="mega-category" href="<?= $e($item[1]) ?>"><?= $e($item[0]) ?></a>
                   <?php if ($item[2]): ?>
-                    <!--
                     <div class="mega-sub-links">
                       <?php foreach ($item[2] as $subitem): ?>
                         <a href="<?= $e($subitem[1]) ?>"><?= $e($subitem[0]) ?></a>
                       <?php endforeach; ?>
                     </div>
-                    -->
                   <?php endif; ?>
                 </div>
               <?php endforeach; ?>
@@ -874,42 +912,65 @@ $menu = [
   var shell = document.querySelector('.header-shell');
   var menu = document.getElementById('megaMenu');
   var menuToggle = document.getElementById('megaToggle');
+  var productToggle = document.getElementById('productToggle');
   var triggers = Array.prototype.slice.call(document.querySelectorAll('.nav-trigger'));
   var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  var closeTimer;
+  var closeTimer, pinnedOpen = false;
   function setOpen(open) {
     window.clearTimeout(closeTimer);
     shell.classList.toggle('mega-open', open);
     menu.setAttribute('aria-hidden', open ? 'false' : 'true');
     menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     menuToggle.setAttribute('aria-label', open ? '전체 메뉴 닫기' : '전체 메뉴 열기');
+    productToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  function togglePinned() {
+    pinnedOpen = !pinnedOpen;
+    setOpen(pinnedOpen);
   }
   menuToggle.addEventListener('click', function () {
+    if (pinnedOpen) {
+      pinnedOpen = false;
+      setOpen(false);
+      return;
+    }
     setOpen(!shell.classList.contains('mega-open'));
   });
+  productToggle.addEventListener('click', togglePinned);
   triggers.forEach(function (trigger) {
     if (canHover) trigger.addEventListener('pointerenter', function () { setOpen(true); });
   });
   if (canHover) {
     shell.addEventListener('pointerleave', function () {
-      closeTimer = window.setTimeout(function () { setOpen(false); }, 180);
+      closeTimer = window.setTimeout(function () {
+        if (!pinnedOpen) setOpen(false);
+      }, 180);
     });
     menu.addEventListener('pointerenter', function () { window.clearTimeout(closeTimer); });
     menu.addEventListener('pointerleave', function () {
-      closeTimer = window.setTimeout(function () { setOpen(false); }, 180);
+      closeTimer = window.setTimeout(function () {
+        if (!pinnedOpen) setOpen(false);
+      }, 180);
     });
   }
   document.addEventListener('click', function (event) {
-    if (!shell.contains(event.target)) setOpen(false);
+    if (!shell.contains(event.target)) {
+      pinnedOpen = false;
+      setOpen(false);
+    }
   });
   document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape') setOpen(false);
+    if (event.key === 'Escape') {
+      pinnedOpen = false;
+      setOpen(false);
+    }
   });
   shell.addEventListener('focusin', function (event) {
-    if (canHover && event.target.closest('.nav-trigger')) setOpen(true);
+    var trigger = event.target.closest('.nav-trigger');
+    if (canHover && trigger && trigger !== productToggle) setOpen(true);
   });
   shell.addEventListener('focusout', function (event) {
-    if (!shell.contains(event.relatedTarget)) setOpen(false);
+    if (!shell.contains(event.relatedTarget) && !pinnedOpen) setOpen(false);
   });
 })();
 </script>
@@ -918,15 +979,18 @@ $menu = [
 <div class="hero" id="hero">
   <?php
   $slides = [
-    ['b-main-a01-a.png', 'NDI Embedded Bridge', "NDI6ㅣHX3"],
-    ['b-main-a02-b.png', 'BOLIN RED LINE', "R9 Flagship"],
-    ['b-main-a03-a.png', 'Outdoor LINE', "옥외용 EXU"],
+    ['image' => 'b-main-a01-a.png', 'title' => 'NDI Embedded Bridge', 'subtitle' => "NDI6ㅣHX3", 'href' => '?p=product&cat=NDI'],
+    ['image' => 'b-main-a04-a.png', 'title' => 'All Weather 4K60 PTZR Camera', 'subtitle' => "Range", 'href' => '?p=detail&id=RANGE'],
+    ['image' => 'b-main-a05-a.png', 'title' => '1 Inch 4K60 PTZ Camera', 'subtitle' => "R9-L420N", 'href' => '?p=detail&id=R9-L420N'],
+    ['image' => 'b-main-a06-a.png', 'title' => '4K60 Outdoor PTZ Camera', 'subtitle' => "EXU420F ", 'href' => '?p=detail&id=EXU420F'],
+    ['image' => 'b-main-a07-a.png', 'title' => 'Advanced PTZ Production Controller', 'subtitle' => "KBD Plus", 'href' => '?p=detail&id=KBD-PLUS'],
   ];
   foreach ($slides as $i => $s): ?>
-  <div class="slide<?= $i === 0 ? ' on' : '' ?>" style="background-image:url('../b-pl-img/<?= $s[0] ?>')">
+  <div class="slide<?= $i === 0 ? ' on' : '' ?>" style="background-image:url('../b-pl-img/<?= $e($s['image']) ?>')">
     <div class="in txt">
-      <span class="s-t"><?= nl2br($e($s[1]), false) ?></span>
-      <?php if ($i === 0): ?><h1 class="s-p"><?= nl2br($e($s[2]), false) ?></h1><?php else: ?><p class="s-p"><?= nl2br($e($s[2]), false) ?></p><?php endif; ?>
+      <span class="s-t"><?= nl2br($e($s['title']), false) ?></span>
+      <?php if ($i === 0): ?><h1 class="s-p"><?= nl2br($e($s['subtitle']), false) ?></h1><?php else: ?><p class="s-p"><?= nl2br($e($s['subtitle']), false) ?></p><?php endif; ?>
+      <a class="slide-cta" href="<?= $e($s['href']) ?>">자세히 보기 <span aria-hidden="true">&gt;</span></a>
     </div>
   </div>
   <?php endforeach; ?>
@@ -942,12 +1006,24 @@ $menu = [
 
   var slides = document.querySelectorAll('#hero .slide'),
       dots = document.querySelectorAll('#hero .dots button'), cur = 0, timer;
+  slides[0].classList.remove('on');
+  dots[0].classList.remove('on');
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      if (cur !== 0) return;
+      slides[0].classList.add('on');
+      dots[0].classList.add('on');
+    });
+  });
   function go(n) {
     slides[cur].classList.remove('on'); dots[cur].classList.remove('on');
     cur = (n + slides.length) % slides.length;
     slides[cur].classList.add('on'); dots[cur].classList.add('on');
   }
-  function start() { clearInterval(timer); timer = setInterval(function () { go(cur + 1); }, 5000); }
+  function start() {
+    clearInterval(timer);
+    timer = setInterval(function () { go(cur + 1); }, 5000);
+  }
   dots.forEach(function (d, i) { d.addEventListener('click', function () { go(i); start(); }); });
   start();
 })();
@@ -966,7 +1042,8 @@ $menu = [
 <section style="background:#111"><div class="in">
   <h2 class="h">Soda Media</h2>
   <p class="lead">BOLIN 한국 총판</p>
-  <div class="grid">
+  <div class="mobile-carousel-wrap">
+  <div class="grid mobile-carousel">
     <a class="card" href="?p=product"><div class="thumb">
       <img src="../b-pl-img/ms1_li1.jpg" alt="Product"></div><div class="b"><h3>Product</h3></div></a>
     <a class="card" href="?p=support"><div class="thumb">
@@ -974,10 +1051,13 @@ $menu = [
     <a class="card" href="?p=demo"><div class="thumb">
       <img src="../b-pl-img/ms1_li3.jpg" alt="데모요청"></div><div class="b"><h3>데모요청</h3></div></a>
   </div>
+  <button type="button" class="carousel-next" aria-label="다음 카드"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+  </div>
 </div></section>
 <section><div class="in">
   <h2 class="h">Range</h2>
   <p class="lead">All Weather 4K60</p>
+  <p class="lead"><a href="?p=detail&id=RANGE">자세히 보기 ></a></p>
   <div>
     <video id="product-video" class="product-video" src="../b-pl-img/bo-rg-a.webm" controls muted playsinline preload="auto"></video>
   </div>
@@ -1024,7 +1104,8 @@ $menu = [
 <section style="background:#111"><div class="in">
   <h2 class="h">Reference</h2>
   <p class="lead">설치 사례</p>
-  <div class="grid">
+  <div class="mobile-carousel-wrap">
+  <div class="grid mobile-carousel reference-grid">
         <div class="thumb">
             <img src="../b-pl-img/rf/001.jpg" alt="제품소개">
         </div>
@@ -1062,7 +1143,29 @@ $menu = [
             <img src="../b-pl-img/rf/012.jpg" alt="제품소개">
         </div>
   </div>
+  <button type="button" class="carousel-next" aria-label="다음 설치 사례"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+  </div>
 </div></section>
+<script>
+(function () {
+  document.querySelectorAll('.mobile-carousel-wrap').forEach(function (wrap) {
+    var carousel = wrap.querySelector('.mobile-carousel'),
+        next = wrap.querySelector('.carousel-next');
+    next.addEventListener('click', function () {
+      var maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      if (carousel.scrollLeft >= maxScroll - 1) {
+        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+        return;
+      }
+      var gap = parseFloat(window.getComputedStyle(carousel).columnGap) || 0;
+      carousel.scrollBy({
+        left: carousel.firstElementChild.getBoundingClientRect().width + gap,
+        behavior: 'smooth'
+      });
+    });
+  });
+})();
+</script>
 <section class="gray" style="background:#080808"><div class="in">
   <h2 class="h">CONTACT US</h2>
   <p class="lead">문의사항이 있으시면 아래 연락처로 연락주시기 바랍니다.</p>
@@ -1089,14 +1192,24 @@ $menu = [
     <?php endforeach; ?>
   </div>
   <?php foreach ($pcats as $ck => $cv):
-    $categoryProducts = array_filter($filteredProducts, fn($x) => $x['cat'] === $ck);
+    if ($pcat !== '' && $pcat !== $ck) continue;
+    $categoryProducts = array_filter($filteredProducts, fn($x) => $x['cat'] === $ck
+      || in_array($ck, $x['also_cats'] ?? [], true));
     if (!$categoryProducts) continue; ?>
-    <h3 class="grp"><?= $e($cv) ?> <small class="category-note"><?= $e($pcatNotes[$ck]) ?></small></h3>
-    <div class="grid">
+    <h3 class="grp"><?= $e($cv) ?><?php if ($pcatNotes[$ck] !== ''): ?> <small class="category-note"><?= $e($pcatNotes[$ck]) ?></small><?php endif; ?></h3>
+    <div class="grid product-grid">
     <?php foreach ($categoryProducts as $x): ?>
-      <a class="card" href="?p=detail&id=<?= $e($x['slug']) ?>">
-        <div class="thumb pimg"><img src="<?= $e($img($x['gallery'][0] ?? '')) ?>" alt="<?= $e($x['name']) ?>" loading="lazy"></div>
-        <div class="b"><h3><?= $e($x['name']) ?></h3><small><?= $e($cv) ?></small></div>
+      <a class="card product-card" href="?p=detail&id=<?= $e($x['slug']) ?>">
+        <div class="product-card-head">
+          <span class="product-brand"><?= $e($x['brand'] ?? 'BOLIN') ?></span>
+          <span class="product-model"><?= $e($x['model'] ?? $x['slug']) ?></span>
+        </div>
+        <div class="thumb pimg product-card-image"><img src="<?= $e($img($x['gallery'][0] ?? '')) ?>" alt="<?= $e($x['name']) ?>" loading="lazy"></div>
+        <div class="product-card-specs">
+          <?php foreach (($x['card_specs'] ?? []) as $specLine): ?>
+            <span><?= $e($specLine) ?></span>
+          <?php endforeach; ?>
+        </div>
       </a>
     <?php endforeach; ?>
     </div>
@@ -1107,7 +1220,7 @@ $menu = [
 <?php elseif ($p === 'detail'): ?>
 <div class="sub"><div class="title"><h1><?= $e($prd['name']) ?></h1></div></div>
 <section><div class="in" style="max-width:900px">
-  <p class="crumb"><a href="?p=product">Product</a> &gt; <a href="?p=product&cat=<?= $e($prd['cat']) ?>"><?= $e($pcats[$prd['cat']]) ?></a> &gt; <?= $e($prd['name']) ?></p>
+  <p class="crumb"><a href="?p=product">Product</a> &gt; <a href="?p=product&cat=<?= urlencode($prd['cat']) ?>"><?= $e($pcats[$prd['cat']]) ?></a> &gt; <?= $e($prd['name']) ?></p>
   <?php if ($prd['gallery']): ?>
   <div class="gal">
     <img id="main-img" src="<?= $e($img($prd['gallery'][0])) ?>" alt="<?= $e($prd['name']) ?>">
@@ -1118,7 +1231,7 @@ $menu = [
     </div>
   </div>
   <?php endif; ?>
-  <?php if ($prd['info']): ?>
+  <?php if (!empty($prd['info'])): ?>
     <table class="info"><?php foreach ($prd['info'] as $r): ?><tr><th><?= $e($r[0]) ?></th><td><?= $e($r[1]) ?></td></tr><?php endforeach; ?></table>
   <?php endif; ?>
   <?php if (!empty($prd['summary'])): ?>
@@ -1173,7 +1286,7 @@ $menu = [
     </div>
   <?php endif; ?>
   <p style="text-align:center;margin-top:40px"><a href="?p=demo"><button type="button" style="padding:14px 40px">데모 요청</button></a></p>
-  <p class="note">제품 이미지 및 사양 출처: <a href="<?= $e($prd['source']) ?>" target="_blank" rel="noopener">BOLIN 한국 총판 소다미디어</a></p>
+  <p class="note">제품 정보 출처: <a href="<?= $e($prd['source']) ?>" target="_blank" rel="noopener"><?= $e($prd['source_label'] ?? 'BOLIN 한국 총판 소다미디어') ?></a><?php if (!empty($prd['spec_source']) && $prd['spec_source'] !== $prd['source']): ?> · <a href="<?= $e($prd['spec_source']) ?>" target="_blank" rel="noopener">BOLIN 공식 사양</a><?php endif; ?></p>
 </div></section>
 
 <?php elseif ($p === 'pds'): ?>
@@ -1217,9 +1330,9 @@ $menu = [
     <?php if (!$pdsList): ?><tr><td colspan="2" style="text-align:center;color:#888">검색 결과가 없습니다.</td></tr><?php endif; ?>
   </table>
 </div></section>
-<section class="gray" id="consult"><div class="in">
-  <h2 class="h">상담신청</h2><p class="lead">&nbsp;</p>
-  <?php if ($sent): ?><div class="ok">상담 신청이 접수되었습니다.</div><?php endif; ?>
+<section class="gray"><div class="in">
+  <h2 class="h" id="consult">기술문의</h2><p class="lead">&nbsp;</p>
+  <?php if ($sent): ?><div class="ok">문의가 접수되었습니다.</div><?php endif; ?>
   <?php if ($consultError !== ''): ?><div role="alert" style="padding:12px;margin:12px 0;color:#9b1c1c;background:#fff2f2;border:1px solid #e6b8b8"><?= $e($consultError) ?></div><?php endif; ?>
   <form method="post" action="?p=support#consult">
     <input type="hidden" name="csrf" value="<?= $e($_SESSION['canon_board_csrf'] ?? '') ?>">
@@ -1228,11 +1341,11 @@ $menu = [
     <input name="tel" placeholder="연락처" value="<?= $e($consultError !== '' ? (string)($_POST['tel'] ?? '') : '') ?>" required>
     <textarea name="msg" rows="5" placeholder="문의 내용" required><?= $e($consultError !== '' ? (string)($_POST['msg'] ?? '') : '') ?></textarea>
     <?php if ($consultCaptcha !== '') echo $captchaLabel($consultCaptcha); ?>
-    <button>상담 신청</button>
+    <button>신청 하기</button>
   </form>
 </div></section>
-<section id="inquiry"><div class="in" style="max-width:900px">
-  <h2 class="h">문의하기</h2>
+<section><div class="in" style="max-width:900px">
+  <h2 class="h" id="inquiry">문의하기</h2>
   <p class="lead">모든 게시글은 비밀글로 등록되며 작성자와 관리자만 내용을 확인할 수 있습니다.</p>
   <?php if ($boardError !== ''): ?><div role="alert" style="padding:12px;margin:12px 0;color:#9b1c1c;background:#fff2f2;border:1px solid #e6b8b8"><?= $e($boardError) ?></div><?php endif; ?>
   <?php if ($boardNotice !== ''): ?><div role="status" style="padding:12px;margin:12px 0;background:#f7f7f7;border:1px solid #ddd"><?= $e($boardNotice) ?></div><?php endif; ?>
@@ -1364,23 +1477,131 @@ $menu = [
 
 <?php elseif ($p === 'about'): ?>
 <div class="sub"><div class="title"><h1>회사소개</h1></div></div>
-<section><div class="in" style="max-width:800px">
-  <h2 class="h" id="greet">인사말</h2><p class="lead">GREETINGS</p>
-  <p>
-소다미디어는 BOLIN 한국 총판으로서 방송 및 영상 제작 환경에 맞는 PTZ 카메라와 전문 기술 지원을 제공합니다.<br><br>
+<section><div class="in" style="max-width:1200px">
 
-오직 미디어 장비를 전문적으로 판매하고 있으며 판매도 중요하지만 사후관리를 더욱 중요하게 생각하며
-모두 고객사의 대한 감사의 도리라고 생각합니다.<br><br>
+<style>
 
-단순히 물건만 판매하는 것에 목적을 두어 물건을 구매해주시는 고객사를 어렵게 만드는 일 없도록 항상 노 력하겠습니다, 치열한 경쟁 시대에
-앞서 나갈 수 있도록 강력하게 도와드리는 가장 든든한 조력자가 되겠습니다.<br><br>
 
-말뿐이 아닌 지속적인 상품 개발과 맞춤형 제안으로 고객 제일주의를 실현하겠습니다. 고객을 위해 흘리는 땀을 두려워하지 않는 정직한 기업이 될 것을 약속드립니다.<br><br>
+img{max-width:100%;display:block}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font-weight:900;font-size:1.15rem;letter-spacing:-.02em}
+.logo small{font-weight:500;color:var(--muted);margin-left:8px;font-size:.85rem}
+nav a{color:var(--muted);text-decoration:none;margin-left:18px;font-size:.92rem}
+nav a:hover,nav a:focus-visible{color:var(--plum)}
+a:focus-visible,.btn:focus-visible{outline:3px solid var(--plum);outline-offset:3px}
+.wero{color:#fff;border-radius:28px; display:grid;grid-template-columns:1fr;gap:32px;align-items:center}
+.wero h1{font-size:clamp(1.9rem,4.6vw,3rem);line-height:1.25;letter-spacing:-.03em;margin:0 0 18px;font-weight:900}
+.wero p{color:rgba(255,255,255,.82);}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:700;text-decoration:none;font-size:.95rem}
+.btn.p{background:#fff;color:var(--deep)}
+.btn.g{border:1.5px solid rgba(255,255,255,.5);color:#fff}
+.facts{display:flex;gap:26px;flex-wrap:wrap;margin-top:30px;padding-top:22px;border-top:1px solid rgba(255,255,255,.18);font-size:.9rem;color:rgba(255,255,255,.75)}
+.facts b{display:block;color:#fff;font-size:1.15rem}
+.wero img{border-radius:20px;width:100%}
+.wero section{padding:5rem 0 0}
+h2{font-size:clamp(1.5rem,3.2vw,2.1rem);line-height:1.35;letter-spacing:-.02em;margin:0 0 16px;font-weight:900}
+.wead{color:var(--muted);margin:0 0 28px}
+.split{display:grid;grid-template-columns:1fr;gap:36px;align-items:center; grid-auto-flow:column;}
+.split img{border-radius:20px;border:1px solid var(--line)}
+.wards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.ward{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px}
+.ward h3{margin:0 0 8px;font-size:1.1rem; text-align:left;}
+.ward p{margin:0;color:var(--muted);font-size:.95rem}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;position:relative;padding:0 0 22px 52px;border-left:2px solid var(--line);margin-left:16px}
+.steps li:last-child{border-color:transparent;padding-bottom:0}
+.steps li::before{content:counter(s);position:absolute;left:-17px;top:0;width:32px;height:32px;border-radius:50%;background:var(--plum);color:var(--on-plum);font-weight:700;display:grid;place-items:center;font-size:.9rem}
+.steps b{display:block}
+.steps span{color:var(--muted);font-size:.95rem}
+.time{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.time div{background:var(--tint);border-radius:18px;padding:26px}
+.time h3{margin:0 0 6px;font-size:1.05rem; text-align:left;}
+.time .y{color:var(--plum);font-weight:900;font-size:1.5rem;display:block}
+.time ul{margin:8px 0 0;padding-left:1.1em;color:var(--muted);font-size:.95rem}
+.promise{background:var(--deep);color:#fff;border-radius:28px;padding:44px 36px}
+.promise h2{color:#fff}
+.promise ol{margin:0 0 22px;padding-left:1.3em;color:rgba(255,255,255,.88)}
+.promise li{margin-bottom:10px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#ccc;margin-right:8px;vertical-align:middle}
+.ph{color:var(--plum);font-weight:500}
+footer{padding:48px 0 40px;color:var(--muted);font-size:.85rem}
+@media (max-width:760px){.wero,.split{grid-template-columns:1fr}.wero{padding:32px 22px}nav{display:none}}
+</style>
 
-소다미디어의 문은 고객여러분께 항상 열려있습니다.<br><br>
-한분 한분 고객님들과 같이 커가는 소다미디어가 되겠습니다.<br>
 
-감사합니다.</p>
+<div class="wero">
+  <div>
+    
+    <p>소다미디어는 미국 BOLIN Technology PTZ 카메라의 한국 총판입니다. 장비를 파는 데서 끝나지 않고, 설치부터 운영까지 끝까지 책임집니다.</p>
+    
+  </div>
+  
+
+<section id="about">
+  <div class="split">
+    <div>
+      <h2>미디어 장비 한 분야에 집중합니다</h2>
+      <p class="wead">방송, 교회·예배, 교육, 기업 영상, 라이브 스트리밍. 제작 환경마다 필요한 카메라와 구성은 다릅니다. 저희는 미디어 장비만 다루며 10년간 쌓은 제품 지식과 현장 경험으로, 환경에 꼭 맞는 구성을 제안합니다.</p>
+      <p class="wead">필요 없는 제품은 권하지 않습니다. 장점과 한계를 솔직하게 말씀드리는 것이 오래 함께하는 방법이라고 믿습니다.</p>
+    </div>
+    <img width="100%" src="/plum/site/b-pl-img/logo_soda.png">
+  </div>
+</section>
+
+<section>
+  <h2>소다미디어를 선택하는 이유</h2>
+  <p class="wead">제품 공급부터 기술 지원까지 한곳에서 해결합니다.</p>
+  <div class="wards">
+    <div class="ward"><h3>현장에 맞는 구성 제안</h3><p>촬영 환경, 예산, 운영 인력을 먼저 파악해 과하지도 부족하지도 않은 구성을 제안합니다.</p></div>
+    <div class="ward"><h3>정식 총판의 기술 지원</h3><p>제조사와 직접 협력하는 한국 총판으로서 정식 보증과 전문 기술 지원을 제공합니다.</p></div>
+    <div class="ward"><h3>판매 이후가 더 중요합니다</h3><p>설치, 설정, 교육, A/S까지. 장비가 현장에서 안정적으로 쓰일 때까지 함께합니다.</p></div>
+  </div>
+</section>
+
+<section id="service">
+  <div class="split">
+    
+    <div>
+      <h2>도입부터 운영까지, 이렇게 함께합니다</h2>
+      <ol class="steps">
+        <li><b>상담</b><span>촬영 환경과 목적, 예산을 듣고 필요한 조건을 정리합니다.</span></li>
+        <li><b>구성 제안</b><span>카메라, 컨트롤러, 네트워크까지 현장에 맞는 구성을 제안합니다.</span></li>
+        <li><b>설치·세팅 지원</b><span>연결과 네트워크 설정 등 현장에서 막히기 쉬운 부분을 함께 해결합니다.</span></li>
+        <li><b>교육과 사후관리</b><span>처음 쓰는 분도 바로 운영할 수 있게 교육하고, 문제가 생기면 빠르게 대응합니다.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="future">
+  <h2>지난 10년, 그리고 앞으로의 10년</h2>
+  <p class="wead">지난 10년이 신뢰를 쌓는 시간이었다면, 앞으로의 10년은 그 신뢰를 바탕으로 더 빠르고 폭넓게 지원하는 시간이 되겠습니다.</p>
+  <div class="time">
+    <div><span class="y">2016</span><h3>개업</h3><ul><li>6월 28일 문을 열고 미디어 장비 전문 기업으로 출발</li></ul></div>
+    <div><span class="y">현재</span><h3>BOLIN 한국 총판</h3><ul><li>방송·영상 제작 환경에 맞는 PTZ 카메라 공급</li><li>전문 기술 지원과 사후관리</li></ul></div>
+    <div><span class="y">앞으로</span><h3>더 넓게, 더 깊게</h3><ul><li>BOLIN 신제품과 액세서리를 빠르게 소개</li><li>카메라부터 스트리밍까지 시스템 단위 제안</li><li>플럼에서 사용 가이드와 적용 사례 공유</li><li>기술 지원 인력과 재고·부품 체계 확충</li></ul></div>
+  </div>
+</section>
+
+<section>
+  <div class="promise">
+    <h2><span class="dot"></span>소다미디어의 약속</h2>
+    <ol>
+      <li>고객을 어렵게 만드는 판매는 하지 않습니다.</li>
+      <li>문제가 생기면 숨기지 않고 먼저 알리고, 해결 과정을 투명하게 공유합니다.</li>
+      <li>약속한 지원은 끝까지 지킵니다. 판매 이후에도 변함없이 연락되는 회사가 되겠습니다.</li>
+    </ol>
+    <p style="margin:0;color:rgba(255,255,255,.8)">고객을 위해 흘리는 땀을 두려워하지 않는 정직한 기업이 되겠습니다.</p>
+  </div>
+</section>
+
+<section style="padding:1rem; margin:1rem;" >
+</section>
+
+</div>
+
 </div></section>
 
 <?php elseif ($p === 'way'): ?>
