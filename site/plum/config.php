@@ -1,11 +1,11 @@
 <?php
-// 문의 게시판 설정. 환경변수(CANON_*)가 있으면 환경변수가 우선합니다.
+// 문의 게시판 설정. 일반 설정은 CANON_* 환경변수, Plum DB 설정은 PLUM_* 환경변수가 우선합니다.
 if (!defined('CANON_BOARD')) { http_response_code(403); exit; }
 
 return [
     'db_host' => 'svc.sel4.cloudtype.app',
     'db_port' => 31446,
-    'db_name' => 'palace0261',
+    'db_name' => 'plum',
     'db_user' => 'root',
     'db_password' => 'palace0261@@',
 

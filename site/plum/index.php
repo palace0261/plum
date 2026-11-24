@@ -102,8 +102,15 @@ function canonBoardConfig(string $key)
         define('CANON_BOARD', true);
         $file = is_file(__DIR__ . '/config.php') ? (require __DIR__ . '/config.php') : [];
     }
-    $env = getenv('CANON_' . strtoupper($key));
-    return $env !== false && $env !== '' ? $env : ($file[$key] ?? null);
+    $envKey = strtoupper($key);
+    $envPrefixes = str_starts_with($key, 'db_')
+        ? ['PLUM_']
+        : ['PLUM_', 'CANON_'];
+    foreach ($envPrefixes as $prefix) {
+        $env = getenv($prefix . $envKey);
+        if ($env !== false && $env !== '') return $env;
+    }
+    return $file[$key] ?? null;
 }
 
 function canonBoardTrustedProxy(): bool
@@ -443,7 +450,8 @@ if (in_array($p, ['support', 'inquiry'], true)) {
                             $insert->close();
                             canonFlowSend(
                                 $data['category'] . ' / ' . $data['title'],
-                                $data['author'] . ' / ' . $data['phone'] . ' / ' . $data['email'] . "\n" . $data['body']
+                                $data['author'] . ' / ' . $data['phone'] . ' / ' . $data['email']
+                                    . "\n제품: " . $data['product'] . "\n" . $data['body']
                             );
                             unset($_SESSION['canon_board_form_time']);
                             header('Location: ?p=support&inquiry=created#inquiry');
@@ -615,6 +623,24 @@ if (in_array($p, ['support', 'inquiry'], true)) {
                     header('Location: ?p=inquiry&replied=1');
                     exit;
                 }
+            } elseif ($p === 'inquiry' && $action === 'admin_delete') {
+                $adminLoggedIn = isset($_SESSION['canon_board_admin_auth_at'])
+                    && time() - (int)$_SESSION['canon_board_admin_auth_at'] <= 1800;
+                $postId = filter_var($_POST['post_id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+                if (!$adminLoggedIn) {
+                    $boardNotice = '관리자 로그인이 필요합니다.';
+                } elseif (!$postId) {
+                    $boardNotice = '삭제할 게시글을 확인해 주세요.';
+                } else {
+                    $remove = $boardDb->prepare(
+                        'UPDATE canon_inquiries SET deleted_at = NOW() WHERE id = ? AND deleted_at IS NULL'
+                    );
+                    $remove->bind_param('i', $postId);
+                    $remove->execute();
+                    $remove->close();
+                    header('Location: ?p=inquiry&deleted=1');
+                    exit;
+                }
             }
         }
 
@@ -627,6 +653,8 @@ if (in_array($p, ['support', 'inquiry'], true)) {
             );
             $boardRows = $result->fetch_all(MYSQLI_ASSOC);
             $result->free();
+            if (isset($_GET['deleted']) && $_GET['deleted'] === '1') $boardNotice = '게시글을 삭제했습니다.';
+            if (isset($_GET['replied']) && $_GET['replied'] === '1') $boardNotice = '답변을 저장했습니다.';
         } elseif ($p === 'support') {
             $result = $boardDb->query('SELECT id, category, author, title FROM canon_inquiries WHERE deleted_at IS NULL ORDER BY id DESC LIMIT 100');
             $boardRows = $result->fetch_all(MYSQLI_ASSOC);
@@ -812,13 +840,13 @@ $seoImage = $siteOrigin . $assetBase . '/b-pl-img/' . ($p === 'detail' && $prd
 <?php
 $menu = [
     ['Product', '?p=product', [
-        ['INDOOR', '?p=product&cat=INDOOR%20PTZ%20CAMERAS', []],
-        ['OUTDOOR', '?p=product&cat=OUTDOOR%20PTZ%20CAMERAS', []],
-        ['RANGE', '?p=product&cat=RANGE%20PTZ%20CAMERA', []],
-        ['ENCODER', '?p=product&cat=ENCODER%20%26%20DECODERS', []],
-        ['CONTROLLERS', '?p=product&cat=CONTROLLERS', []],
-        ['NDI', '?p=product&cat=NDI', []],
-        ['Dante AV', '?p=product&cat=DANTE+AV', []],
+        ['INDOOR', '?p=product&cat=INDOOR%20PTZ%20CAMERAS#product-categories', []],
+        ['OUTDOOR', '?p=product&cat=OUTDOOR%20PTZ%20CAMERAS#product-categories', []],
+        ['RANGE', '?p=product&cat=RANGE%20PTZ%20CAMERA#product-categories', []],
+        ['ENCODER', '?p=product&cat=ENCODER%20%26%20DECODERS#product-categories', []],
+        ['CONTROLLERS', '?p=product&cat=CONTROLLERS#product-categories', []],
+        ['NDI', '?p=product&cat=NDI#product-categories', []],
+        ['Dante AV', '?p=product&cat=DANTE+AV#product-categories', []],
     ]],
     ['견적문의', '?p=support#consult', [
     ]],
@@ -1183,9 +1211,9 @@ $menu = [
 <?php elseif ($p === 'product'): ?>
 <div class="sub"><div class="title"><h1>Product</h1></div></div>
 <section><div class="in">
-  <div class="tabs">
+  <div class="tabs anchor" id="product-categories">
     <?php foreach (['' => '전체'] + $pcats as $k => $v): ?>
-      <a href="?p=product&cat=<?= urlencode($k) ?>" class="<?= $k === $pcat ? 'on' : '' ?>"><?= $e($v) ?></a>
+      <a href="?p=product&cat=<?= urlencode($k) ?>#product-categories" class="<?= $k === $pcat ? 'on' : '' ?>"><?= $e($v) ?></a>
     <?php endforeach; ?>
   </div>
   <?php foreach ($pcats as $ck => $cv):
@@ -1217,7 +1245,7 @@ $menu = [
 <?php elseif ($p === 'detail'): ?>
 <div class="sub"><div class="title"><h1><?= $e($prd['name']) ?></h1></div></div>
 <section><div class="in" style="max-width:900px">
-  <p class="crumb"><a href="?p=product">Product</a> &gt; <a href="?p=product&cat=<?= urlencode($prd['cat']) ?>"><?= $e($pcats[$prd['cat']]) ?></a> &gt; <?= $e($prd['name']) ?></p>
+  <p class="crumb"><a href="?p=product">Product</a> &gt; <a href="?p=product&cat=<?= urlencode($prd['cat']) ?>#product-categories"><?= $e($pcats[$prd['cat']]) ?></a> &gt; <?= $e($prd['name']) ?></p>
   <?php if ($prd['gallery']): ?>
   <div class="gal">
     <img id="main-img" src="<?= $e($img($prd['gallery'][0])) ?>" alt="<?= $e($prd['name']) ?>">
@@ -1353,7 +1381,7 @@ $menu = [
   <h2 class="h" id="inquiry">기술문의</h2>
   <p class="lead">모든 게시글은 비밀글로 등록되며 작성자와 관리자만 내용을 확인할 수 있습니다.</p>
   <?php if ($boardError !== ''): ?><div role="alert" style="padding:12px;margin:12px 0;color:#9b1c1c;background:#fff2f2;border:1px solid #e6b8b8"><?= $e($boardError) ?></div><?php endif; ?>
-  <?php if ($boardNotice !== ''): ?><div role="status" style="padding:12px;margin:12px 0;background:#f7f7f7;border:1px solid #ddd"><?= $e($boardNotice) ?></div><?php endif; ?>
+  <?php if ($boardNotice !== ''): ?><div role="status" style="padding:12px;margin:12px 0;border:1px solid #ddd"><?= $e($boardNotice) ?></div><?php endif; ?>
   <?php if (!$boardError && !$boardRateLimitReady && $boardPostId > 0): ?>
     <p role="alert" class="note">게시판 보안 설정이 완료되지 않아 비밀글을 확인할 수 없습니다.</p>
   <?php elseif (!$boardError && !$boardPost && $boardPostId > 0): ?>
@@ -1405,7 +1433,8 @@ $menu = [
           <option value="<?= $e($category) ?>" <?= $category === $boardPost['category'] ? 'selected' : '' ?>><?= $e($category) ?></option>
         <?php endforeach; ?>
       </select>
-      <input name="author" value="<?= $e($boardPost['author']) ?>" maxlength="20" pattern="[가-힣]{2,20}" title="한글 2~20자로 입력해 주세요." placeholder="작성자 (한글 2~20자)" required>
+      <input name="author" value="<?= $e($boardPost['author']) ?>" minlength="2" maxlength="20" pattern="[가-힣]{2,20}" title="한글 2~20자로 입력해 주세요." placeholder="작성자 (한글 2~20자)" aria-describedby="edit-author-error" required>
+      <span id="edit-author-error" role="status" style="color:#ff8585;font-size:.9rem" hidden>한글 2~20자로 입력해 주세요.</span>
       <input name="password" type="password" autocomplete="current-password" placeholder="현재 비밀번호" required>
       <input name="new_password" type="password" autocomplete="new-password" placeholder="새 비밀번호 (변경 시에만 입력)">
       <select name="product" required>
@@ -1439,7 +1468,8 @@ $menu = [
           <option value="<?= $e($category) ?>" <?= $keep('category') === $e($category) ? 'selected' : '' ?>><?= $e($category) ?></option>
         <?php endforeach; ?>
       </select>
-      <input name="author" maxlength="20" pattern="[가-힣]{2,20}" title="한글 2~20자로 입력해 주세요." placeholder="작성자 (한글 2~20자)" value="<?= $keep('author') ?>" required>
+      <input name="author" minlength="2" maxlength="20" pattern="[가-힣]{2,20}" title="한글 2~20자로 입력해 주세요." placeholder="작성자 (한글 2~20자)" value="<?= $keep('author') ?>" aria-describedby="create-author-error" required>
+      <span id="create-author-error" role="status" style="color:#ff8585;font-size:.9rem" hidden>한글 2~20자로 입력해 주세요.</span>
       <input name="password" type="password" autocomplete="new-password" minlength="8" maxlength="72" placeholder="비밀번호 (8자 이상)" required>
       <select name="product" required>
         <option value="">상품선택</option>
@@ -1463,6 +1493,22 @@ $menu = [
       var open = box.hasAttribute('hidden');
       box.toggleAttribute('hidden', !open);
       b.setAttribute('aria-expanded', open);
+    });
+
+    document.querySelectorAll('input[name="author"][pattern]').forEach(function (input) {
+      var error = document.getElementById(input.getAttribute('aria-describedby'));
+      var validate = function (showEmpty) {
+        var invalid = (input.value !== '' || showEmpty) && !/^[가-힣]{2,20}$/u.test(input.value);
+        input.setCustomValidity(invalid ? error.textContent : '');
+        input.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+        error.hidden = !invalid;
+      };
+      input.addEventListener('input', function (event) {
+        if (!event.isComposing) validate(false);
+      });
+      input.addEventListener('compositionend', function () { validate(false); });
+      input.addEventListener('invalid', function () { validate(true); });
+      validate(false);
     });
   })();
   </script>
@@ -1593,7 +1639,7 @@ $menu = [
 <div class="sub"><div class="title"><h1>문의 관리자</h1></div></div>
 <section><div class="in" style="max-width:1000px">
   <?php if ($boardError !== ''): ?><div role="alert" style="padding:12px;margin:12px 0;color:#9b1c1c;background:#fff2f2;border:1px solid #e6b8b8"><?= $e($boardError) ?></div><?php endif; ?>
-  <?php if ($boardNotice !== ''): ?><div role="status" style="padding:12px;margin:12px 0;background:#f7f7f7;border:1px solid #ddd"><?= $e($boardNotice) ?></div><?php endif; ?>
+  <?php if ($boardNotice !== ''): ?><div role="status" style="padding:12px;margin:12px 0;border:1px solid #ddd"><?= $e($boardNotice) ?></div><?php endif; ?>
   <?php if (!$boardAdminLoggedIn && !$boardRateLimitReady && !$boardError): ?>
     <p role="alert" class="note">로그인 보안 설정이 완료되지 않았습니다.</p>
   <?php elseif (!$boardAdminLoggedIn): ?>
@@ -1624,8 +1670,23 @@ $menu = [
           <textarea name="answer" rows="5" maxlength="10000" placeholder="관리자 답변" required><?= $e($row['answer'] ?? '') ?></textarea>
           <button>답변 저장</button>
         </form>
+        <?php if (empty($row['deleted_at'])): ?>
+          <form method="post" action="?p=inquiry" class="admin-delete-form" style="margin-top:10px;text-align:right">
+            <input type="hidden" name="board_action" value="admin_delete">
+            <input type="hidden" name="csrf" value="<?= $e($_SESSION['canon_board_csrf'] ?? '') ?>">
+            <input type="hidden" name="post_id" value="<?= (int)$row['id'] ?>">
+            <button type="submit" style="background:#b42318">문의 삭제</button>
+          </form>
+        <?php endif; ?>
       </article>
     <?php endforeach; ?>
+    <script>
+      document.querySelectorAll('.admin-delete-form').forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!window.confirm('이 문의글을 삭제하시겠습니까?')) event.preventDefault();
+        });
+      });
+    </script>
   <?php endif; ?>
 </div></section>
 <?php endif; ?>
@@ -1639,7 +1700,7 @@ $menu = [
         <a href="?p=demo">데모요청</a>
         <a href="?p=support#inquiry">기술문의</a>
         <a href="?p=support#consult">견적문의</a>
-        <a href="#megaToggle" id="footerMegaToggle">메뉴열기</a>
+        <a href="?p=support">고객지원</a>
       </ul>
     </div>
     <div class="footer-grid in">
