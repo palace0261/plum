@@ -959,6 +959,13 @@ $menu = [
     });
   }
   document.addEventListener('click', function (event) {
+    if (event.target.closest('#footerMegaToggle')) {
+      event.preventDefault();
+      menuToggle.focus({ preventScroll: true });
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      menuToggle.click();
+      return;
+    }
     if (!shell.contains(event.target)) {
       pinnedOpen = false;
       setOpen(false);
@@ -1496,7 +1503,7 @@ $menu = [
       <p class="wead">방송, 교회·예배, 교육, 기업 영상, 라이브 스트리밍. 제작 환경마다 필요한 카메라와 구성은 다릅니다. 저희는 미디어 장비만 다루며 10년간 쌓은 제품 지식과 현장 경험으로, 환경에 꼭 맞는 구성을 제안합니다.</p>
       <p class="wead">필요 없는 제품은 권하지 않습니다. 장점과 한계를 솔직하게 말씀드리는 것이 오래 함께하는 방법이라고 믿습니다.</p>
     </div>
-    <img width="100%" src="/plum/site/b-pl-img/logo_soda.png">
+    <img width="100%" src="../b-pl-img/logo_soda.png">
   </div>
 </section>
 
@@ -1628,6 +1635,16 @@ $menu = [
 
 <footer>
   <div class="footer-main">
+    <div class="footer-links">
+      <ul>
+        <a href="?p=about">회사소개</a>
+        <a href="?p=way">오시는길</a>
+        <a href="?p=demo">데모요청</a>
+        <a href="?p=support#inquiry">기술문의</a>
+        <a href="?p=support#consult">견적문의</a>
+        <a href="#megaToggle" id="footerMegaToggle">메뉴열기</a>
+      </ul>
+    </div>
     <div class="footer-grid in">
       <div class="footer-logo">
         <img class="f-logo" src="../b-pl-img/logo_on.png" alt="PLUM 소다미디어">
