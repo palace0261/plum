@@ -981,14 +981,14 @@ $menu = [
 </script>
 
 <?php if ($p === 'main'): ?>
-<div class="hero" id="hero">
+<div class="hero is-initial" id="hero">
   <?php
   $slides = [
-    ['image' => 'b-main-a01-a.png', 'title' => 'NDI Embedded Bridge', 'subtitle' => "NDI6ㅣHX3", 'href' => '?p=product&cat=NDI'],
     ['image' => 'b-main-a04-a.png', 'title' => 'All Weather 4K60 PTZR Camera', 'subtitle' => "Range", 'href' => '?p=detail&id=RANGE'],
     ['image' => 'b-main-a05-a.png', 'title' => '1 Inch 4K60 PTZ Camera', 'subtitle' => "R9-L420N", 'href' => '?p=detail&id=R9-L420N'],
     ['image' => 'b-main-a06-a.png', 'title' => '4K60 Outdoor PTZ Camera', 'subtitle' => "EXU420F ", 'href' => '?p=detail&id=EXU420F'],
     ['image' => 'b-main-a07-a.png', 'title' => 'Advanced PTZ Production Controller', 'subtitle' => "KBD Plus", 'href' => '?p=detail&id=KBD-PLUS'],
+    //['image' => 'b-main-a01-a.png', 'title' => 'NDI Embedded Bridge', 'subtitle' => "NDI6ㅣHX3", 'href' => '?p=product&cat=NDI'],
   ];
   foreach ($slides as $i => $s): ?>
   <div class="slide<?= $i === 0 ? ' on' : '' ?>" style="background-image:url('../b-pl-img/<?= $e($s['image']) ?>')">
@@ -1010,17 +1010,10 @@ $menu = [
   window.addEventListener('scroll', onScroll, { passive: true });
 
   var slides = document.querySelectorAll('#hero .slide'),
-      dots = document.querySelectorAll('#hero .dots button'), cur = 0, timer;
-  slides[0].classList.remove('on');
-  dots[0].classList.remove('on');
-  requestAnimationFrame(function () {
-    requestAnimationFrame(function () {
-      if (cur !== 0) return;
-      slides[0].classList.add('on');
-      dots[0].classList.add('on');
-    });
-  });
+      dots = document.querySelectorAll('#hero .dots button'),
+      hero = document.getElementById('hero'), cur = 0, timer;
   function go(n) {
+    hero.classList.remove('is-initial');
     slides[cur].classList.remove('on'); dots[cur].classList.remove('on');
     cur = (n + slides.length) % slides.length;
     slides[cur].classList.add('on'); dots[cur].classList.add('on');
@@ -1182,7 +1175,7 @@ $menu = [
     <div><b>이메일</b>sodamedia@hanmal.net</div>
   </div>
 </div></section>
-<section>
+<section class="bar-banner">
   <div class="grid">
         <div class="thumb" id="pl-bar-banner-0a1">
         <img src="../b-pl-img/bar-bn-a1.jpg" alt="BOLIN">
@@ -1230,11 +1223,13 @@ $menu = [
   <?php if ($prd['gallery']): ?>
   <div class="gal">
     <img id="main-img" src="<?= $e($img($prd['gallery'][0])) ?>" alt="<?= $e($prd['name']) ?>">
+    <?php if (count($prd['gallery']) > 1): ?>
     <div class="thumbs">
       <?php foreach ($prd['gallery'] as $g): ?>
         <img src="<?= $e($img($g)) ?>" alt="" onclick="document.getElementById('main-img').src=this.src">
       <?php endforeach; ?>
     </div>
+    <?php endif; ?>
   </div>
   <?php endif; ?>
   <?php if (!empty($prd['info'])): ?>
