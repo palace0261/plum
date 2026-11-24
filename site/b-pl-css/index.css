@@ -68,7 +68,7 @@ header.scrolled{background:var(--paper);color:var(--ink);box-shadow:0 8px 24px r
 .nav-caret svg{display:block;width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
 .header-shell.mega-open .nav-caret svg{transform:rotate(180deg)}
 .nav-trigger:hover,.mega-open .nav-trigger{background:transparent;color:#fff;transform:none;filter:none}
-.mega-menu{position:absolute;top:100%;left:0;z-index:110;width:100%;max-height:calc(100vh - 170px);overflow:auto;background: #fff;border:0;box-shadow:none;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,visibility .2s}
+.mega-menu{position:absolute;top:100%;left:0;z-index:110;width:100%;max-height:calc(100vh - 170px);overflow:auto;background: #ebebeb;border:0;box-shadow:none;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,visibility .2s}
 .header-shell.mega-open .mega-menu{opacity:1;visibility:visible;pointer-events:auto}
 .mega-inner.in{display:block;max-width:1320px;height:auto;padding: 1rem 30px 2rem;}
 .mega-columns{/* display:grid; *//* grid-template-columns: repeat(8,minmax(0,1fr)); */gap:0}
@@ -120,13 +120,14 @@ h2.h{margin-bottom:8px;color:var(--ink);font-size:clamp(1.8rem,3.3vw,2.7rem);let
 #consult,#inquiry{scroll-margin-top:162px}
 .lead{margin-top:8px;margin-bottom:40px;color:#a29d94;text-align:center}
 .product-video{display:block;width:100%;max-width:960px;max-height:70vh;margin:0 auto;object-fit:contain}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap: 1rem;}
 .carousel-next{display:none}
 .carousel-next svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .card{position:relative;display:block;overflow:hidden;border:1px solid #292929;border-radius:12px;background:#111;color:var(--ink);box-shadow:0 8px 24px rgba(0,0,0,.25);transition:.2s}
 .card:hover{border-color:#292929;box-shadow:0 18px 34px rgba(0,0,0,.5);transform:translateY(-5px)}
 .thumb{display:flex;height:160px;align-items:center;justify-content:center;background:#101010;color:var(--red);font-size:1.6rem;font-weight:700}
 .thumb img{display:block;width:100%;height:100%;object-fit: scale-down;opacity:1;transition:opacity .25s,transform .5s;/* background: #000000; */}
+#reference+p+div .thumb img{object-fit: cover;}
 .thumb:has(img){position:relative;padding:0}
 .thumb:has(img) span{position:absolute;top:8px;left:12px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
 .card:hover .thumb img{/* transform:scale(1.035) */}
