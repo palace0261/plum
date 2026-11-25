@@ -6,9 +6,11 @@
     "source": "https://plumkorea.co.kr/goods/goods_view.php?goodsNo=1000000020",
     "spec_source": "https://bolintechnology.com/product/r9-420f-4k60-professional-ptz-camera",
     "gallery": [
-      "products/r9-420f/g1.png"
+      "products/r9-420f/g1.png",
+      "products/r9-420f/g2.png",
+      "products/r9-420f/g2w.png",
+      "products/r9-420f/g3.png"
     ],
-    "detail": [],
     "summary": "Sony IMX715 1/2.8형 센서와 20배 광학 줌을 탑재한 4K60 PTZ 카메라입니다. 듀얼 12G-SDI, HDMI, 광 SDI 및 IP 스트리밍을 지원합니다.",
     "features": [
       "255 presets",

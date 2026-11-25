@@ -960,14 +960,7 @@ $menu = [
   }
   window.addEventListener('resize', positionMenu);
   navInner.addEventListener('scroll', positionMenu);
-  menuToggle.addEventListener('click', function () {
-    if (pinnedOpen) {
-      pinnedOpen = false;
-      setOpen(false);
-      return;
-    }
-    setOpen(!shell.classList.contains('mega-open'));
-  });
+  menuToggle.addEventListener('click', togglePinned);
   productToggle.addEventListener('click', togglePinned);
   if (canHover) {
     function scheduleClose() {
@@ -1063,22 +1056,27 @@ $menu = [
 </script>
 <?php endif; ?>
 <?php if ($p === 'main'): ?>
-<section style="background:#111"><div class="in">
-  <h2 class="h">소다미디어</h2>
-  <p class="lead">BOLIN Technology 한국 총판으로서 최선의 고객 지원 서비스를 제공하기 위해 끊임없이 노력하며, 고객이 믿고 맡길 수 있는 든든한 파트너가 되겠습니다.</p>
+<section style="background:#111" class="ycl"><div class="in">
+  <h2 class="h">제품소개</h2>
+  <p class="lead">BOLIN Technology 한국 총판</p>
   <div class="mobile-carousel-wrap">
   <div class="grid mobile-carousel">
-    <a class="card" href="?p=product"><div class="thumb">
-      <img src="../b-pl-img/ms1_li1.jpg" alt="Product"></div><div class="b"><h3>Product</h3></div></a>
-    <a class="card" href="?p=support"><div class="thumb">
-      <img src="../b-pl-img/ms1_li2.jpg" alt="고객지원"></div><div class="b"><h3>고객지원</h3></div></a>
-    <a class="card" href="?p=demo"><div class="thumb">
-      <img src="../b-pl-img/ms1_li3.jpg" alt="데모요청"></div><div class="b"><h3>데모요청</h3></div></a>
+    <a class="yard" href="?p=detail&id=RANGE"><div class="thumb">
+      <img src="../b-pl-img/ro/b-01.png" ></div><div class="b"><h3>Range</h3></div></a>
+    <a class="yard" href="?p=product&cat=INDOOR%20PTZ%20CAMERAS#product-categories"><div class="thumb">
+      <img src="../b-pl-img/ro/b-02.png" ></div><div class="b"><h3>실내용</h3></div></a>
+    <a class="yard" href="?p=product&cat=CONTROLLERS#product-categories"><div class="thumb">
+      <img src="../b-pl-img/ro/b-03.png" ></div><div class="b"><h3>컨트롤러</h3></div></a>
+    <a class="yard" href="?p=product&cat=OUTDOOR%20PTZ%20CAMERAS#product-categories"><div class="thumb">
+      <img src="../b-pl-img/ro/b-04.png" ></div><div class="b"><h3>야외용</h3></div></a>
+    <a class="yard" href="?p=product&cat=ENCODER+%26+DECODERS#product-categories"><div class="thumb">
+      <img src="../b-pl-img/ro/b-05.png" ></div><div class="b"><h3>엔코더</h3></div></a>
   </div>
   <button type="button" class="carousel-next" aria-label="다음 카드"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+  <button type="button" class="carousel-prev" aria-label="이전 카드" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
   </div>
 </div></section>
-<section><div class="in">
+<section style="background:#000"><div class="in">
   <h2 class="new">NEW PTZ</h2>
   <h2 class="h">Range</h2>
   <p class="lead">All Weather 4K60</p>
@@ -1126,6 +1124,8 @@ $menu = [
   observer.observe(video);
 })();
 </script>
+
+
 <section style="background:#111"><div class="in">
   <h2 class="h" id="reference">Reference</h2>
   <p class="lead">설치 사례</p>
@@ -1171,27 +1171,69 @@ $menu = [
   <button type="button" class="carousel-next" aria-label="다음 설치 사례"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
   </div>
 </div></section>
+
+<section style="background:#000"><div class="in">
+  <h2 class="h">소다미디어</h2>
+  <p class="lead">최선의 고객 지원 서비스를 제공하기 위해 끊임없이 노력하며, 고객이 믿고 맡길 수 있는 든든한 파트너가 되겠습니다.</p>
+  <div class="mobile-carousel-wrap">
+  <div class="grid mobile-carousel">
+    <a class="card" href="?p=product"><div class="thumb">
+      <img src="../b-pl-img/ms1_li1.jpg" alt="Product"></div><div class="b"><h3>Product</h3></div></a>
+    <a class="card" href="?p=support"><div class="thumb">
+      <img src="../b-pl-img/ms1_li2.jpg" alt="고객지원"></div><div class="b"><h3>고객지원</h3></div></a>
+    <a class="card" href="?p=demo"><div class="thumb">
+      <img src="../b-pl-img/ms1_li3.jpg" alt="데모요청"></div><div class="b"><h3>데모요청</h3></div></a>
+  </div>
+  <button type="button" class="carousel-next" aria-label="다음 카드"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+  </div>
+</div></section>
+
 <script>
 (function () {
   document.querySelectorAll('.mobile-carousel-wrap').forEach(function (wrap) {
     var carousel = wrap.querySelector('.mobile-carousel'),
-        next = wrap.querySelector('.carousel-next');
+        next = wrap.querySelector('.carousel-next'),
+        prev = wrap.querySelector('.carousel-prev');
+    function moveNext() {
+      var gap = parseFloat(window.getComputedStyle(carousel).columnGap) || 0;
+      carousel.scrollBy({
+        left: carousel.firstElementChild.getBoundingClientRect().width + gap,
+        behavior: 'smooth'
+      });
+    }
+    if (prev) {
+      function updateButtons() {
+        var maxScroll = carousel.scrollWidth - carousel.clientWidth;
+        var atStart = carousel.scrollLeft <= 1;
+        var atEnd = carousel.scrollLeft >= maxScroll - 1;
+        if (!atStart) prev.hidden = false;
+        if (!atEnd) next.hidden = false;
+        if (atEnd && document.activeElement === next && !atStart) prev.focus({ preventScroll: true });
+        if (atStart && document.activeElement === prev && !atEnd) next.focus({ preventScroll: true });
+        prev.hidden = atStart;
+        next.hidden = atEnd;
+      }
+      next.addEventListener('click', moveNext);
+      prev.addEventListener('click', function () {
+        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+      });
+      carousel.addEventListener('scroll', updateButtons);
+      window.addEventListener('resize', updateButtons);
+      updateButtons();
+      return;
+    }
     next.addEventListener('click', function () {
       var maxScroll = carousel.scrollWidth - carousel.clientWidth;
       if (carousel.scrollLeft >= maxScroll - 1) {
         carousel.scrollTo({ left: 0, behavior: 'smooth' });
         return;
       }
-      var gap = parseFloat(window.getComputedStyle(carousel).columnGap) || 0;
-      carousel.scrollBy({
-        left: carousel.firstElementChild.getBoundingClientRect().width + gap,
-        behavior: 'smooth'
-      });
+      moveNext();
     });
   });
 })();
 </script>
-<section class="gray" style="background:#080808"><div class="in">
+<section class="gray" style="background:#111"><div class="in">
   <h2 class="h">CONTACT US</h2>
   <p class="lead">문의사항이 있으시면 아래 연락처로 연락주시기 바랍니다.</p>
   <div class="contact">
