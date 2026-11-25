@@ -767,13 +767,13 @@ if ($p !== 'main') {
     $canonicalUrl .= '?' . http_build_query($canonicalParams);
 }
 $seoTitle = $p === 'detail' && $prd
-    ? $prd['name'] . ' | BOLIN PTZ 카메라 - 소다미디어'
+    ? $prd['name'] . ' | BOLIN PTZ 카메라 - 플럼 코리아'
     : ($p === 'main'
-        ? 'BOLIN 한국 총판 소다미디어 | BOLIN PTZ 카메라'
-        : ($pages[$p] ?? 'BOLIN 한국 총판') . ' | BOLIN 한국 총판 소다미디어');
+        ? 'BOLIN 한국 총판 플럼 코리아 | BOLIN PTZ 카메라'
+        : ($pages[$p] ?? 'BOLIN 한국 총판') . ' | BOLIN 한국 총판 플럼 코리아');
 $seoDescription = $p === 'detail' && $prd
     ? $prd['summary']
-    : 'BOLIN 한국 총판 소다미디어. 방송, 영상 제작 환경에 최적화된 BOLIN PTZ 카메라 제품 안내와 상담, 기술 지원을 제공합니다.';
+    : 'BOLIN 한국 총판 플럼 코리아. 방송, 영상 제작 환경에 최적화된 BOLIN PTZ 카메라 제품 안내와 상담, 기술 지원을 제공합니다.';
 $seoImage = $siteOrigin . $assetBase . '/b-pl-img/' . ($p === 'detail' && $prd
     ? $prd['gallery'][0]
     : 'logo.png');
@@ -782,8 +782,8 @@ $seoImage = $siteOrigin . $assetBase . '/b-pl-img/' . ($p === 'detail' && $prd
 
 <!-- SEO Meta Tags -->
 <meta name="description" content="<?= $e($seoDescription) ?>">
-<meta name="keywords" content="BOLIN 한국 총판, BOLIN PTZ 카메라, R9-230H, R9 Series, Full HD PTZ 카메라, 소다미디어">
-<meta name="author" content="소다미디어">
+<meta name="keywords" content="BOLIN 한국 총판, BOLIN PTZ 카메라, R9-230H, R9 Series, Full HD PTZ 카메라, 플럼 코리아">
+<meta name="author" content="플럼 코리아">
 <meta name="robots" content="index, follow">
 <meta name="googlebot" content="index, follow">
 <meta name="bingbot" content="index, follow">
@@ -796,7 +796,7 @@ $seoImage = $siteOrigin . $assetBase . '/b-pl-img/' . ($p === 'detail' && $prd
 <meta property="og:description" content="<?= $e($seoDescription) ?>">
 <meta property="og:url" content="<?= $e($canonicalUrl) ?>">
 <meta property="og:image" content="<?= $e($seoImage) ?>">
-<meta property="og:site_name" content="소다미디어 | BOLIN 한국 총판">
+<meta property="og:site_name" content="플럼 코리아 | BOLIN 한국 총판">
 <meta property="og:locale" content="ko_KR">
 
 <!-- Twitter Card Meta Tags -->
@@ -862,7 +862,7 @@ $menu = [
 ?>
 <header id="hd"><div class="header-shell">
   <div class="utility-row in">
-    <span class="utility-note">SODA MEDIA</span>
+    <span class="utility-note">PLUM KOREA</span>
     <div class="utility-links">
       <a href="?p=support#consult">견적문의</a>
       <a href="?p=support#inquiry">기술문의</a>
@@ -1173,7 +1173,7 @@ $menu = [
 </div></section>
 
 <section style="background:#000"><div class="in">
-  <h2 class="h">소다미디어</h2>
+  <h2 class="h">플럼 코리아</h2>
   <p class="lead">최선의 고객 지원 서비스를 제공하기 위해 끊임없이 노력하며, 고객이 믿고 맡길 수 있는 든든한 파트너가 되겠습니다.</p>
   <div class="mobile-carousel-wrap">
   <div class="grid mobile-carousel">
@@ -1240,7 +1240,7 @@ $menu = [
     <div><b>구매 문의</b>070-8866-1171</div>
     <div><b>영업시간</b>오전 10시 ~ 오후 7시 (토/일/공휴일 휴무)</div>
     <div><b>점심식사</b>오후 1시 ~ 2시</div>
-    <div><b>이메일</b>sodamedia@hanmal.net</div>
+    <div><b>이메일</b>plumkorea1171@gmail.com</div>
   </div>
 </div></section>
 <section class="bar-banner">
@@ -1356,7 +1356,7 @@ $menu = [
   <?php endif; ?>
   <p style="text-align:center;margin-top:40px"><a href="?p=demo"><button type="button" style="padding:14px 40px">데모 요청</button></a></p>
   <?php
-  $showSource = !empty($prd['source']) && ($prd['source_label'] ?? 'BOLIN 한국 총판 소다미디어') !== 'BOLIN 한국 총판 소다미디어';
+  $showSource = !empty($prd['source']) && ($prd['source_label'] ?? 'BOLIN 한국 총판 플럼 코리아') !== 'BOLIN 한국 총판 플럼 코리아';
   $showSpecSource = !empty($prd['spec_source']) && (!$showSource || $prd['spec_source'] !== $prd['source']);
   ?>
   <?php if ($showSource || $showSpecSource): ?>
@@ -1574,73 +1574,30 @@ $menu = [
 
 
 <div class="wero">
-  <div>
-    
-    <p>소다미디어는 미국 BOLIN Technology PTZ 카메라의 한국 총판입니다. 장비를 파는 데서 끝나지 않고, 설치부터 운영까지 끝까지 책임집니다.</p>
-    
-  </div>
   
 
 <section id="about">
   <div class="split">
     <div>
-      <h2>미디어 장비 한 분야에 집중합니다</h2>
-      <p class="wead">방송, 교회·예배, 교육, 기업 영상, 라이브 스트리밍. 제작 환경마다 필요한 카메라와 구성은 다릅니다. 저희는 미디어 장비만 다루며 10년간 쌓은 제품 지식과 현장 경험으로, 환경에 꼭 맞는 구성을 제안합니다.</p>
-      <p class="wead">필요 없는 제품은 권하지 않습니다. 장점과 한계를 솔직하게 말씀드리는 것이 오래 함께하는 방법이라고 믿습니다.</p>
+      
+    <img width="100%" src="../b-pl-img/fw.png">
     </div>
-    <img width="100%" src="../b-pl-img/logo_soda.png">
-  </div>
-</section>
-
-<section>
-  <h2>소다미디어를 선택하는 이유</h2>
-  <p class="wead">제품 공급부터 기술 지원까지 한곳에서 해결합니다.</p>
-  <div class="wards">
-    <div class="ward"><h3>현장에 맞는 구성 제안</h3><p>촬영 환경, 예산, 운영 인력을 먼저 파악해 과하지도 부족하지도 않은 구성을 제안합니다.</p></div>
-    <div class="ward"><h3>정식 총판의 기술 지원</h3><p>제조사와 직접 협력하는 한국 총판으로서 정식 보증과 전문 기술 지원을 제공합니다.</p></div>
-    <div class="ward"><h3>판매 이후가 더 중요합니다</h3><p>설치, 설정, 교육, A/S까지. 장비가 현장에서 안정적으로 쓰일 때까지 함께합니다.</p></div>
-  </div>
-</section>
-
-<section id="service">
-  <div class="split">
-    
     <div>
-      <h2>도입부터 운영까지, 이렇게 함께합니다</h2>
-      <ol class="steps">
-        <li><b>상담</b><span>촬영 환경과 목적, 예산을 듣고 필요한 조건을 정리합니다.</span></li>
-        <li><b>구성 제안</b><span>카메라, 컨트롤러, 네트워크까지 현장에 맞는 구성을 제안합니다.</span></li>
-        <li><b>설치·세팅 지원</b><span>연결과 네트워크 설정 등 현장에서 막히기 쉬운 부분을 함께 해결합니다.</span></li>
-        <li><b>교육과 사후관리</b><span>처음 쓰는 분도 바로 운영할 수 있게 교육하고, 문제가 생기면 빠르게 대응합니다.</span></li>
-      </ol>
+      <h2>미디어 장비 한 분야에 집중합니다</h2>
+      <p class="wead"><br>
+플럼코리아는 미국 BOLIN Technology의 한국 공식 총판으로, 전문 영상·방송 장비 분야에 집중하며 고객에게 최적의 솔루션을 제공하고 있습니다.<br><br>
+단순히 제품을 공급하는 데 그치지 않고, 고객의 환경과 목적에 맞는 장비 제안부터 설치, 운영, 사후관리까지 함께하며 믿을 수 있는 파트너가 되고자 합니다.<br><br>
+빠르게 변화하는 미디어 환경에 발맞춰 지속적인 기술 연구와 솔루션 개발을 이어가며, 안정적이고 효율적인 시스템 구축을 위한 전문적인 기술 지원과 맞춤형 컨설팅을 제공하겠습니다.<br><br>
+무엇보다 제품 판매 이후의 과정까지 중요하게 생각하며, 꾸준한 실천으로 신뢰를 쌓고 고객과 함께 성장하는 기업이 되겠습니다.<br><br>
+<br>
+감사합니다.
+</p>
+      
     </div>
   </div>
 </section>
 
-<section id="future">
-  <h2>지난 10년, 그리고 앞으로의 10년</h2>
-  <p class="wead">지난 10년이 신뢰를 쌓는 시간이었다면, 앞으로의 10년은 그 신뢰를 바탕으로 더 빠르고 폭넓게 지원하는 시간이 되겠습니다.</p>
-  <div class="time">
-    <div><span class="y">2016</span><h3>개업</h3><ul><li>6월 28일 문을 열고 미디어 장비 전문 기업으로 출발</li></ul></div>
-    <div><span class="y">현재</span><h3>BOLIN 한국 총판</h3><ul><li>방송·영상 제작 환경에 맞는 PTZ 카메라 공급</li><li>전문 기술 지원과 사후관리</li></ul></div>
-    <div><span class="y">앞으로</span><h3>더 넓게, 더 깊게</h3><ul><li>BOLIN 신제품과 액세서리를 빠르게 소개</li><li>카메라부터 스트리밍까지 시스템 단위 제안</li><li>플럼에서 사용 가이드와 적용 사례 공유</li><li>기술 지원 인력과 재고·부품 체계 확충</li></ul></div>
-  </div>
-</section>
 
-<section>
-  <div class="promise">
-    <h2><span class="dot"></span>소다미디어의 약속</h2>
-    <ol>
-      <li>고객을 어렵게 만드는 판매는 하지 않습니다.</li>
-      <li>문제가 생기면 숨기지 않고 먼저 알리고, 해결 과정을 투명하게 공유합니다.</li>
-      <li>약속한 지원은 끝까지 지킵니다. 판매 이후에도 변함없이 연락되는 회사가 되겠습니다.</li>
-    </ol>
-    <p style="margin:0;color:rgba(255,255,255,.8)">고객을 위해 흘리는 땀을 두려워하지 않는 정직한 기업이 되겠습니다.</p>
-  </div>
-</section>
-
-<section style="padding:1rem; margin:1rem;" >
-</section>
 
 </div>
 
@@ -1656,7 +1613,7 @@ $menu = [
   <table class="way-tb">
     <tr><th>주소</th><td>서울특별시 강서구 양천로 400-12 (더리브골드타워) 1114호</td></tr>
     <tr><th>대표번호</th><td>070-8866-1171</td></tr>
-    <tr><th>메일</th><td>sodamedia@hanmail.net</td></tr>
+    <tr><th>메일</th><td>plumkorea1171@gmail.com</td></tr>
   </table>
 </div></section>
 
@@ -1747,11 +1704,11 @@ $menu = [
     </div>
     <div class="footer-grid in">
       <div class="footer-logo">
-        <img class="f-logo" src="../b-pl-img/logo_on.png" alt="PLUM 소다미디어">
+        <img class="f-logo" src="../b-pl-img/logo_on.png" alt="PLUM 플럼 코리아">
       </div>
       <div class="footer-column footer-company">
         <ul class="f-info">
-          <li><span>소다미디어</span></li>
+          <li><span>플럼 코리아</span></li>
           <li><span><b>주소</b> : 서울특별시 강서구 양천로 400-12 (더리브골드타워) 1114호</span></li>
         </ul>
       </div>
@@ -1765,7 +1722,7 @@ $menu = [
         <ul class="f-info">
           <li><span><b>대표번호</b> : 070-8866-1171</span></li>
           <li><span><b>개인정보관리자</b> : 서정우</span></li>
-          <li><span><b>메일</b> : sodamedia@hanmail.net</span></li>
+          <li><span><b>메일</b> : plumkorea1171@gmail.com</span></li>
         </ul>
       </div>
       <div class="footer-column footer-hours">
@@ -1778,7 +1735,7 @@ $menu = [
   </div>
   <div class="footer-bottom">
     <div class="in">
-      <p class="copy">COPYRIGHT(C) 소다미디어 ALL RIGHT RESERVED.</p>
+      <p class="copy">COPYRIGHT(C) 플럼 코리아 ALL RIGHT RESERVED.</p>
     </div>
   </div>
 </footer>

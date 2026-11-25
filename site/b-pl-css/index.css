@@ -296,11 +296,11 @@ footer{padding:0;border-top:1px solid #242424;background:#080808;color:#aaa59b;f
 .btn.g{border:1.5px solid rgba(255,255,255,.5);color:#fff}
 .facts{display:flex;gap:26px;flex-wrap:wrap;margin-top:30px;padding-top:22px;border-top:1px solid rgba(255,255,255,.18);font-size:.9rem;color:rgba(255,255,255,.75)}
 .facts b{display:block;color:#fff;font-size:1.15rem}
-.wero img{border-radius:20px;width:100%}
-.wero section{padding:5rem 0 0}
+.wero img{}
+.wero section{padding:0rem 0 0}
 .wead{color:var(--muted);margin:0 0 28px}
-.split{display:grid;grid-template-columns:1fr;gap:36px;align-items:center;grid-auto-flow: column;}
-.split img{border-radius:20px;border:1px solid var(--line)}
+.split{display:grid;grid-template-columns: 1fr 3fr;gap: 3rem;align-items: center;}
+.split img{/* border:1px solid var(--line); */}
 .wards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
 .ward{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px}
 .ward h3{margin:0 0 8px;font-size:1.1rem; text-align:left;}
