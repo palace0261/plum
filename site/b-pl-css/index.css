@@ -128,7 +128,7 @@ section .in{max-width:1260px}
 .title{padding:56px 0 30px;background:var(--paper);color:var(--ink);text-align:left;border-bottom:1px solid #25292b}
 .sub .title{padding-left:max(24px,calc((100vw - 1260px)/2));padding-right:max(24px,calc((100vw - 1260px)/2))}
 .title h1,.title h2{font-size:clamp(2.2rem,4vw,3.6rem);letter-spacing:-.06em}
-h2.h{margin-bottom:8px;color:var(--ink);font-size:clamp(1.8rem,3.3vw,2.7rem);letter-spacing:-.055em;text-align:center}
+h2.h{margin-bottom:8px;color:var(--ink);font-size:clamp(1.8rem,3.3vw,2.7rem);letter-spacing: -.005em;text-align:center}
 section[id],[id].anchor{scroll-margin-top:10rem;} /* 스크롤 */
 #consult,#inquiry{scroll-margin-top:15rem;} /* 스크롤 */
 .lead{margin-top:8px;margin-bottom:40px;color:#a29d94;text-align:center}

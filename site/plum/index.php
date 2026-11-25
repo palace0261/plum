@@ -1077,8 +1077,7 @@ $menu = [
   </div>
 </div></section>
 <section style="background:#000"><div class="in">
-  <h2 class="new">NEW PTZ</h2>
-  <h2 class="h">Range</h2>
+  <h2 class="h">NEW PTZ Range</h2>
   <p class="lead">All Weather 4K60</p>
   <p class="lead"><a href="?p=detail&id=RANGE" style="color:var(--fs)">자세히 보기 ></a></p>
   <div>
