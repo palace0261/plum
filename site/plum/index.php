@@ -1060,9 +1060,9 @@ $menu = [
   <h2 class="h">제품소개</h2>
   <p class="lead">BOLIN Technology 한국 총판</p>
   <div class="mobile-carousel-wrap">
-  <div class="grid mobile-carousel">
+  <div class="grid mobile-carousel" id="wszq">
     <a class="yard" href="?p=detail&id=RANGE"><div class="thumb">
-      <img src="../b-pl-img/ro/b-01.png" ></div><div class="b"><h3>Range</h3></div></a>
+      <img src="../b-pl-img/ro/b-01a.png" ></div><div class="b"><h3>Range</h3></div></a>
     <a class="yard" href="?p=product&cat=INDOOR%20PTZ%20CAMERAS#product-categories"><div class="thumb">
       <img src="../b-pl-img/ro/b-02.png" ></div><div class="b"><h3>실내용</h3></div></a>
     <a class="yard" href="?p=product&cat=CONTROLLERS#product-categories"><div class="thumb">
